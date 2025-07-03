@@ -23,7 +23,7 @@
                 <div class="alert alert-danger">${errorMessage}</div>
             </c:if>
             
-            <form action="${pageContext.request.contextPath}/abonnements/save" method="post">
+            <form action="${pageContext.request.contextPath}/abonnements/create" method="post">
                 <!-- Sélection de l'adhérent -->
                 <div class="mb-3">
                     <label for="adherentId" class="form-label required">Adhérent</label>

@@ -1,0 +1,10 @@
+deploy.bat 
+deploy2.bat 
+deploy.sh
+
+target/
+target/FilmCategorie/
+target/FilmCategorie.war
+target/maven-status/
+
+.vscode/

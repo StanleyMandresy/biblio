@@ -10,10 +10,12 @@ import java.util.List;
 import java.time.LocalDate;
 
 public interface AbonnementRepository extends JpaRepository<Abonnement, Long> {
-    List<Abonnement> findByAdherentId(Long adherentId);
-    boolean existsByAdherentIdAndDateFinAfter(Long adherentId, LocalDate date);
+   List<Abonnement> findByAdherentIdAdherent(Long idAdherent);
 
-    @Query("SELECT COUNT(a) > 0 FROM Abonnement a WHERE " +
+boolean existsByAdherentIdAdherentAndDateFinAfter(Long idAdherent, LocalDate date);
+
+
+ @Query("SELECT CASE WHEN COUNT(a) > 0 THEN true ELSE false END FROM Abonnement a WHERE " +
        "a.adherent = :adherent AND " +
        "((a.dateDebut BETWEEN :debut AND :fin) OR " +
        "(a.dateFin BETWEEN :debut AND :fin) OR " +
@@ -23,4 +25,5 @@ boolean existsByAdherentAndDates(
         @Param("adherent") Adherent adherent,
         @Param("debut") LocalDate debut,
         @Param("fin") LocalDate fin);
+
 }

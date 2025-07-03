@@ -32,7 +32,7 @@
 <!-- Liens vers Inscription et Réabonnement -->
 <div style="margin-bottom: 20px;">
     <a class="button" href="${pageContext.request.contextPath}/adherents/add">Inscrire un adhérent</a>
-    <a class="button" href="${pageContext.request.contextPath}/adherents/create">Réabonnement</a>
+    <a class="button" href="${pageContext.request.contextPath}/abonnements/add">Réabonnement</a>
 </div>
 
 <!-- Tableau des adhérents -->
@@ -57,7 +57,7 @@
                 <td>${a.dateNaissance}</td>
                 <td>${a.email}</td>
                 <td>${a.dateInscription}</td>
-                <td>${a.profil.nom}</td>
+                <td>${a.profil.nomProfil}</td>
             </tr>
         </c:forEach>
     </tbody>

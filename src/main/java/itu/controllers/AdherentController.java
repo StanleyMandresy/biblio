@@ -49,6 +49,6 @@ public class AdherentController {
     @GetMapping
     public String listerAdherents(Model model) {
         model.addAttribute("adherents", adherentService.listerTous());
-        return "adherents/liste";
+        return "Adherent/liste";
     }
 }

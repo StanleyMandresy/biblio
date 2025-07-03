@@ -44,7 +44,7 @@ public String enregistrerAbonnement(
         Abonnement abonnement = abonnementService.creerAbonnement(
             adherentId, montant, dateDebut, dateFin);
 
-        return "redirect:/abonnements/" + abonnement.getIdAbonnement();
+        return "redirect:/abonnements";
     } catch (IllegalArgumentException | IllegalStateException e) {
   
         return "redirect:/abonnements/add";

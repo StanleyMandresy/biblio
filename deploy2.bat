@@ -4,7 +4,7 @@ setlocal
 :: =========================================
 :: CONFIGURATION - MODIFIEZ ICI SEULEMENT
 :: =========================================
-set TOMCAT_WEBAPPS=D:\xampp\tomcat\webapps
+set TOMCAT_WEBAPPS=F:\xampp\tomcat\webapps
 set NEW_WAR_NAME=Biblio
 :: =========================================
 

@@ -51,11 +51,11 @@ public Abonnement creerAbonnement(Long adherentId, BigDecimal montant,
 }
     @Transactional(readOnly = true)
     public List<Abonnement> listerAbonnementsAdherent(Long adherentId) {
-        return abonnementRepository.findByAdherentId(adherentId);
+        return abonnementRepository.findByAdherentIdAdherent(adherentId);
     }
     
     @Transactional(readOnly = true)
-    public boolean adherentAAbonnementActif(Long adherentId) {
-        return abonnementRepository.existsByAdherentIdAndDateFinAfter(adherentId, LocalDate.now());
+    public boolean adherentAbonnementActif(Long adherentId) {
+        return abonnementRepository.existsByAdherentIdAdherentAndDateFinAfter(adherentId, LocalDate.now());
     }
 }
