@@ -8,6 +8,8 @@ CREATE TABLE Profil (
     Quota_maxEmprunter INTEGER,
     Duree_pret INTEGER NOT NULL
 );
+ALTER TABLE Profil ADD COLUMN Duree_penalite INTEGER DEFAULT 0;
+
 INSERT INTO Profil (Nom_Profil, Quota_maxSurPlace, Quota_maxEmprunter, Duree_pret) VALUES
 ('Etudiant',4, 2, 15),
 ('Enseignant', 6, 4, 30),

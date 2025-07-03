@@ -23,6 +23,9 @@ public class Profil {
     @Column(name = "duree_pret", nullable = false)
     private Integer dureePret;
 
+    @Column(name = "duree_penalite")
+    private Integer dureePenalite;
+
     @OneToMany(mappedBy = "profil", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<Adherent> adherents;
 
@@ -35,6 +38,24 @@ public class Profil {
         this.quotaMaxEmprunter = quotaMaxEmprunter;
         this.dureePret = dureePret;
     }
+
+    public Profil(String nomProfil, Integer quotaMaxSurPlace, Integer quotaMaxEmprunter, Integer dureePret, Integer dureePenalite) {
+    this.nomProfil = nomProfil;
+    this.quotaMaxSurPlace = quotaMaxSurPlace;
+    this.quotaMaxEmprunter = quotaMaxEmprunter;
+    this.dureePret = dureePret;
+    this.dureePenalite = dureePenalite;
+}
+
+public Integer getDureePenalite() {
+    return dureePenalite;
+}
+
+public void setDureePenalite(Integer dureePenalite) {
+    this.dureePenalite = dureePenalite;
+}
+
+
 
     // Getters et Setters
     public Long getIdProfil() { return idProfil; }

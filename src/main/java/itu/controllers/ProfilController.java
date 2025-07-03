@@ -18,37 +18,57 @@ public class ProfilController {
     @GetMapping
     public String listerProfils(Model model) {
         model.addAttribute("profils", profilService.listerTous());
-        return "profils/liste";
+        return "Profil/liste";
     }
 
     // Afficher le formulaire de création
-    @GetMapping("/nouveau")
+    @GetMapping("/add")
     public String afficherFormulaireCreation(Model model) {
         model.addAttribute("profil", new Profil());
-        return "profils/formulaire";
-    }
-
-    // Traiter la création
-    @PostMapping("/creer")
-    public String creerProfil(
-            @RequestParam String nomProfil,
-            @RequestParam int quotaMaxSurPlace,
-            @RequestParam Integer quotaMaxEmprunter,
-            @RequestParam int dureePret) {
-        
-        profilService.creerProfil(nomProfil, quotaMaxSurPlace, quotaMaxEmprunter, dureePret);
-        return "redirect:/profils";
+        return "Profil/form";
     }
 
     // Afficher le formulaire d'édition
-    @GetMapping("/editer/{id}")
+    @GetMapping("/update/{id}")
     public String afficherFormulaireEdition(@PathVariable Long id, Model model) {
         model.addAttribute("profil", profilService.trouverParId(id));
-        return "profils/edition";
+        return "Profil/form";
     }
 
+    // Traiter création ou mise à jour
+ @PostMapping("/create")
+public String enregistrerProfil(
+        @RequestParam(required = false) Long id,
+        @RequestParam String nomProfil,
+        @RequestParam int quotaMaxSurPlace,
+        @RequestParam(required = false) Integer quotaMaxEmprunter,
+        @RequestParam int dureePret,
+        @RequestParam(required = false, defaultValue = "0") Integer dureePenalite) {
+
+    if (id != null) {
+        // Mise à jour
+        Profil existant = profilService.trouverParId(id);
+        if (existant != null) {
+            existant.setNomProfil(nomProfil);
+            existant.setQuotaMaxSurPlace(quotaMaxSurPlace);
+            existant.setQuotaMaxEmprunter(quotaMaxEmprunter);
+            existant.setDureePret(dureePret);
+            existant.setDureePenalite(dureePenalite);
+            profilService.enregistrerProfil(existant);
+        }
+    } else {
+        // Création
+        Profil nouveau = new Profil(nomProfil, quotaMaxSurPlace, quotaMaxEmprunter, dureePret);
+        nouveau.setDureePenalite(dureePenalite);
+        profilService.enregistrerProfil(nouveau);
+    }
+
+    return "redirect:/profils";
+}
+
+
     // Supprimer un profil
-    @GetMapping("/supprimer/{id}")
+    @GetMapping("/delete/{id}")
     public String supprimerProfil(@PathVariable Long id) {
         profilService.supprimerProfil(id);
         return "redirect:/profils";

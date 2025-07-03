@@ -7,7 +7,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
-
+import java.util.Optional;
 @Service
 public class ProfilService {
 
@@ -15,7 +15,7 @@ public class ProfilService {
     private ProfilRepository profilRepository;
 
     @Transactional
-    public Profil creerProfil(String nomProfil, int quotaMaxSurPlace, 
+    public Profil enregistrerProfil(String nomProfil, int quotaMaxSurPlace, 
                             Integer quotaMaxEmprunter, int dureePret) {
         
         if (profilRepository.existsByNomProfil(nomProfil)) {
@@ -30,6 +30,9 @@ public class ProfilService {
 
         return profilRepository.save(profil);
     }
+    public Profil enregistrerProfil(Profil profil) {
+    return profilRepository.save(profil);
+}
 
     @Transactional(readOnly = true)
     public List<Profil> listerTous() {
@@ -42,12 +45,15 @@ public class ProfilService {
                 .orElseThrow(() -> new RuntimeException("Profil non trouvé"));
     }
 
-    @Transactional
-    public void supprimerProfil(Long id) {
-        Profil profil = trouverParId(id);
-        if (!profil.getAdherents().isEmpty()) {
-            throw new RuntimeException("Impossible de supprimer - des adhérents sont associés à ce profil");
-        }
-        profilRepository.delete(profil);
+  
+public void supprimerProfil(Long id) {
+    Profil profil = profilRepository.findByIdWithAdherents(id)
+        .orElseThrow(() -> new RuntimeException("Profil introuvable"));
+
+    if (!profil.getAdherents().isEmpty()) {
+        throw new RuntimeException("Impossible de supprimer : des adhérents sont encore liés à ce profil");
     }
+
+    profilRepository.delete(profil);
+}
 }
