@@ -1,0 +1,73 @@
+package itu.repositories;
+
+import itu.models.Pret;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
+import java.util.List;
+
+public interface PretRepository extends JpaRepository<Pret, Long> {
+    
+    @Query("SELECT p FROM Pret p " +
+           "LEFT JOIN FETCH p.adherent " +
+           "LEFT JOIN FETCH p.exemplaireLivre ex " +
+           "LEFT JOIN FETCH ex.livre " +
+           "ORDER BY p.dateEmprunt DESC")
+    List<Pret> findAllWithDetails();
+
+    @Query("SELECT p FROM Pret p " +
+           "LEFT JOIN FETCH p.adherent " +
+           "LEFT JOIN FETCH p.exemplaireLivre ex " +
+           "LEFT JOIN FETCH ex.livre " +
+           "WHERE p.idPret = :id")
+    Pret findByIdWithDetails(@Param("id") Long id);
+
+    @Query("SELECT p FROM Pret p " +
+           "LEFT JOIN FETCH p.adherent " +
+           "LEFT JOIN FETCH p.exemplaireLivre ex " +
+           "LEFT JOIN FETCH ex.livre " +
+           "WHERE p.dateRendu IS NULL " +
+           "ORDER BY p.dateRenduPrevue ASC")
+    List<Pret> findEmpruntsEnCours();
+
+    @Query("SELECT p FROM Pret p " +
+           "LEFT JOIN FETCH p.adherent " +
+           "LEFT JOIN FETCH p.exemplaireLivre ex " +
+           "LEFT JOIN FETCH ex.livre " +
+           "WHERE p.dateRendu IS NULL " +
+           "AND p.dateRenduPrevue < CURRENT_TIMESTAMP " +
+           "ORDER BY p.dateRenduPrevue ASC")
+    List<Pret> findEmpruntsEnRetard();
+
+    @Query("SELECT p FROM Pret p " +
+           "LEFT JOIN FETCH p.exemplaireLivre ex " +
+           "LEFT JOIN FETCH ex.livre " +
+           "WHERE p.adherent.idAdherent = :adherentId " +
+           "AND p.dateRendu IS NULL " +
+           "ORDER BY p.dateEmprunt DESC")
+    List<Pret> findEmpruntsEnCoursParAdherent(@Param("adherentId") Long adherentId);
+
+    List<Pret> findByAdherentIdAdherentOrderByDateEmpruntDesc(Long adherentId);
+
+    @Query("SELECT COUNT(p) FROM Pret p WHERE p.dateRendu IS NULL")
+    long countEmpruntsEnCours();
+
+    @Query("SELECT COUNT(p) FROM Pret p " +
+           "WHERE p.dateRendu IS NULL " +
+           "AND p.dateRenduPrevue < CURRENT_TIMESTAMP")
+    long countEmpruntsEnRetard();
+
+    @Query("SELECT COUNT(p) FROM Pret p " +
+           "WHERE p.adherent.idAdherent = :adherentId " +
+           "AND p.dateRendu IS NULL")
+    long countEmpruntsEnCoursParAdherent(@Param("adherentId") Long adherentId);
+
+    @Query("SELECT p FROM Pret p " +
+           "LEFT JOIN FETCH p.adherent " +
+           "LEFT JOIN FETCH p.exemplaireLivre ex " +
+           "LEFT JOIN FETCH ex.livre " +
+           "WHERE p.dateRendu IS NULL " +
+           "AND p.dateRenduPrevue BETWEEN CURRENT_TIMESTAMP AND CURRENT_TIMESTAMP + 3 DAY " +
+           "ORDER BY p.dateRenduPrevue ASC")
+    List<Pret> findEmpruntsARendreBientot();
+}

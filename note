@@ -1,0 +1,24 @@
+mvn "clean" install "-X"
+
+mvn exec:java
+
+
+structure du dossier
+src 
+    -main
+         -java  
+               -itu
+                    -models
+                    -repositories
+                    -services
+         Main.java  
+    -ressources
+     beans.xml //jpa,entity,....
+target
+pom.xml
+
+
+
+
+
+
