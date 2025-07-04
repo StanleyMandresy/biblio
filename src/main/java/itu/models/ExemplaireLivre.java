@@ -14,8 +14,9 @@ public class ExemplaireLivre {
     @Column(name = "idexemplairelivre")
     private Long idExemplaireLivre;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "idlivre", nullable = false)
+
     private Livre livre;
 
     @Column(name = "codebarre", length = 50, unique = true)
@@ -28,6 +29,9 @@ public class ExemplaireLivre {
 
     @Column(length = 20)
     private String etat = "bon";
+
+    @Column(name = "status")
+private Integer status = 1;
 
     @OneToMany(mappedBy = "exemplaireLivre", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<Pret> prets;
@@ -52,6 +56,9 @@ public class ExemplaireLivre {
     public String getCodeBarre() { return codeBarre; }
     public void setCodeBarre(String codeBarre) { this.codeBarre = codeBarre; }
 
+public Integer getStatus() { return status; }
+public void setStatus(Integer status) { this.status = status; }
+
     public Date getDateAcquisition() { return dateAcquisition; }
     public void setDateAcquisition(Date dateAcquisition) { this.dateAcquisition = dateAcquisition; }
 
@@ -62,8 +69,10 @@ public class ExemplaireLivre {
     public void setPrets(List<Pret> prets) { this.prets = prets; }
 
     // Méthodes utilitaires
-    public boolean isDisponible() {
-        return ("bon".equals(etat) || "moyen".equals(etat)) && 
-               (prets == null || prets.stream().noneMatch(pret -> pret.getDateRendu() == null));
-    }
+   public boolean isDisponible() {
+    return status == 1 && 
+           ("bon".equals(etat) || "moyen".equals(etat)) &&
+           (prets == null || prets.stream().noneMatch(pret -> pret.getDateRendu() == null));
+}
+
 }

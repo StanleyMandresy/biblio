@@ -26,15 +26,18 @@ public class Livre {
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     private Date dateEdition;
 
-    @Column(name = "maisonedition", length = 100)
-    private String maisonEdition;
+   
 
-    @Column(length = 20)
-    private String status = "disponible";
+
 
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "idtypelivre")
     private TypeLivre typeLivre;
+
+    @Column(name = "restriction_age")
+    private Integer restrictionAge;
+    
+
 
     @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(
@@ -50,11 +53,11 @@ public class Livre {
     // Constructeurs
     public Livre() {}
 
-    public Livre(String titre, String auteur, Date dateEdition, String maisonEdition) {
+    public Livre(String titre, String auteur, Date dateEdition) {
         this.titre = titre;
         this.auteur = auteur;
         this.dateEdition = dateEdition;
-        this.maisonEdition = maisonEdition;
+      
     }
 
     // Getters et Setters
@@ -70,11 +73,14 @@ public class Livre {
     public Date getDateEdition() { return dateEdition; }
     public void setDateEdition(Date dateEdition) { this.dateEdition = dateEdition; }
 
-    public String getMaisonEdition() { return maisonEdition; }
-    public void setMaisonEdition(String maisonEdition) { this.maisonEdition = maisonEdition; }
+public Integer getRestrictionAge() {
+        return restrictionAge;
+    }
 
-    public String getStatus() { return status; }
-    public void setStatus(String status) { this.status = status; }
+    // Setter
+    public void setRestrictionAge(Integer restrictionAge) {
+        this.restrictionAge = restrictionAge;
+    }
 
     public TypeLivre getTypeLivre() { return typeLivre; }
     public void setTypeLivre(TypeLivre typeLivre) { this.typeLivre = typeLivre; }
@@ -85,11 +91,7 @@ public class Livre {
     public List<ExemplaireLivre> getExemplaires() { return exemplaires; }
     public void setExemplaires(List<ExemplaireLivre> exemplaires) { this.exemplaires = exemplaires; }
 
-    // Méthodes utilitaires
-    public boolean isDisponible() {
-        return "disponible".equals(this.status);
-    }
-
+   
     public long getNombreExemplairesDisponibles() {
         if (exemplaires == null) return 0;
         return exemplaires.stream()

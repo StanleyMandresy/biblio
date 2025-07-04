@@ -1,9 +1,11 @@
+
 package itu.models;
 
 import jakarta.persistence.*;
-import java.time.LocalDateTime;
-import java.time.temporal.ChronoUnit;
+import java.time.LocalDate;
 import org.springframework.format.annotation.DateTimeFormat;
+import java.time.temporal.ChronoUnit;
+
 
 @Entity
 @Table(name = "pret")
@@ -17,16 +19,19 @@ public class Pret {
     private String typePret;
 
     @Column(name = "date_emprunt", nullable = false)
-    @DateTimeFormat(pattern = "yyyy-MM-dd'T'HH:mm")
-    private LocalDateTime dateEmprunt;
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
+    private LocalDate dateEmprunt;
 
     @Column(name = "date_rendu")
-    @DateTimeFormat(pattern = "yyyy-MM-dd'T'HH:mm")
-    private LocalDateTime dateRendu;
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
+    private LocalDate dateRendu;
 
     @Column(name = "date_rendu_prevue", nullable = false)
-    @DateTimeFormat(pattern = "yyyy-MM-dd'T'HH:mm")
-    private LocalDateTime dateRenduPrevue;
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
+    private LocalDate dateRenduPrevue;
+
+    @Column(name = "is_prolonged")
+    private Boolean isProlonged = false;
 
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "idadherent", nullable = false)
@@ -36,10 +41,9 @@ public class Pret {
     @JoinColumn(name = "idexemplairelivre", nullable = false)
     private ExemplaireLivre exemplaireLivre;
 
-    // Constructeurs
     public Pret() {}
 
-    public Pret(String typePret, LocalDateTime dateEmprunt, LocalDateTime dateRenduPrevue, 
+    public Pret(String typePret, LocalDate dateEmprunt, LocalDate dateRenduPrevue,
                 Adherent adherent, ExemplaireLivre exemplaireLivre) {
         this.typePret = typePret;
         this.dateEmprunt = dateEmprunt;
@@ -48,21 +52,24 @@ public class Pret {
         this.exemplaireLivre = exemplaireLivre;
     }
 
-    // Getters et Setters
+    // Getters / Setters
     public Long getIdPret() { return idPret; }
     public void setIdPret(Long idPret) { this.idPret = idPret; }
 
     public String getTypePret() { return typePret; }
     public void setTypePret(String typePret) { this.typePret = typePret; }
 
-    public LocalDateTime getDateEmprunt() { return dateEmprunt; }
-    public void setDateEmprunt(LocalDateTime dateEmprunt) { this.dateEmprunt = dateEmprunt; }
+    public LocalDate getDateEmprunt() { return dateEmprunt; }
+    public void setDateEmprunt(LocalDate dateEmprunt) { this.dateEmprunt = dateEmprunt; }
 
-    public LocalDateTime getDateRendu() { return dateRendu; }
-    public void setDateRendu(LocalDateTime dateRendu) { this.dateRendu = dateRendu; }
+    public LocalDate getDateRendu() { return dateRendu; }
+    public void setDateRendu(LocalDate dateRendu) { this.dateRendu = dateRendu; }
 
-    public LocalDateTime getDateRenduPrevue() { return dateRenduPrevue; }
-    public void setDateRenduPrevue(LocalDateTime dateRenduPrevue) { this.dateRenduPrevue = dateRenduPrevue; }
+    public LocalDate getDateRenduPrevue() { return dateRenduPrevue; }
+    public void setDateRenduPrevue(LocalDate dateRenduPrevue) { this.dateRenduPrevue = dateRenduPrevue; }
+
+    public Boolean getIsProlonged() { return isProlonged; }
+    public void setIsProlonged(Boolean isProlonged) { this.isProlonged = isProlonged; }
 
     public Adherent getAdherent() { return adherent; }
     public void setAdherent(Adherent adherent) { this.adherent = adherent; }
@@ -76,18 +83,18 @@ public class Pret {
     }
 
     public boolean isEnRetard() {
-        return isEnCours() && LocalDateTime.now().isAfter(dateRenduPrevue);
+        return isEnCours() && LocalDate.now().isAfter(dateRenduPrevue);
     }
 
     public long getJoursDeRetard() {
         if (!isEnRetard()) return 0;
-        return ChronoUnit.DAYS.between(dateRenduPrevue, LocalDateTime.now());
+        return ChronoUnit.DAYS.between(dateRenduPrevue, LocalDate.now());
     }
 
     public long getJoursRestants() {
         if (!isEnCours()) return 0;
         if (isEnRetard()) return -getJoursDeRetard();
-        return ChronoUnit.DAYS.between(LocalDateTime.now(), dateRenduPrevue);
+        return ChronoUnit.DAYS.between(LocalDate.now(), dateRenduPrevue);
     }
 
     public String getStatusPret() {

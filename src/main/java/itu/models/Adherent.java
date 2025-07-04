@@ -34,6 +34,10 @@ public class Adherent {
     @JoinColumn(name = "id_profil", nullable = false)
     private Profil profil;
 
+        @OneToOne(mappedBy = "adherent", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
+    private AdherentQuota quota;
+
+
     // Relations
     @OneToMany(mappedBy = "adherent", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<Pret> prets;

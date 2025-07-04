@@ -8,12 +8,8 @@ import java.util.List;
 
 public interface PretRepository extends JpaRepository<Pret, Long> {
     
-    @Query("SELECT p FROM Pret p " +
-           "LEFT JOIN FETCH p.adherent " +
-           "LEFT JOIN FETCH p.exemplaireLivre ex " +
-           "LEFT JOIN FETCH ex.livre " +
-           "ORDER BY p.dateEmprunt DESC")
-    List<Pret> findAllWithDetails();
+   @Query("SELECT p FROM Pret p JOIN FETCH p.adherent JOIN FETCH p.exemplaireLivre el JOIN FETCH el.livre")
+List<Pret> findAllWithDetails();
 
     @Query("SELECT p FROM Pret p " +
            "LEFT JOIN FETCH p.adherent " +

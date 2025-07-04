@@ -26,4 +26,10 @@ boolean existsByAdherentAndDates(
         @Param("debut") LocalDate debut,
         @Param("fin") LocalDate fin);
 
+ @Query("SELECT CASE WHEN COUNT(a) > 0 THEN true ELSE false END FROM Abonnement a " +
+       "WHERE a.adherent = :adherent AND :datePret BETWEEN a.dateDebut AND a.dateFin")
+boolean isAbonneAlaDate(
+        @Param("adherent") Adherent adherent,
+        @Param("datePret") LocalDate datePret);       
+
 }

@@ -40,47 +40,89 @@ CREATE TABLE TypeLivre (
     IdTypeLivre SERIAL PRIMARY KEY,
     Type VARCHAR(50) NOT NULL UNIQUE
 );
+INSERT INTO TypeLivre (Type) VALUES
+('Roman'),
+('Essai'),
+('Science'),
+('Informatique'),
+('Histoire');
 
 CREATE TABLE Livre (
     IdLivre SERIAL PRIMARY KEY,
     Titre VARCHAR(255) NOT NULL,
     Auteur VARCHAR(255),
     DateEdition DATE,
-    MaisonEdition VARCHAR(100),
     IdTypeLivre INTEGER REFERENCES TypeLivre(IdTypeLivre),
     Status VARCHAR(20) NOT NULL DEFAULT 'disponible' CHECK (Status IN ('disponible', 'emprunté', 'perdu', 'en réparation'))
 );
+ALTER TABLE Livre
+ADD COLUMN restriction_age INTEGER;
+
+INSERT INTO Livre (Titre, Auteur, DateEdition, IdTypeLivre, Status) VALUES
+('Le Petit Prince', 'Antoine de Saint-Exupéry', '1943-04-06', 1, 'disponible'),
+('LArt de la Guerre', 'Sun Tzu', '1910-01-01', 2, 'disponible'),
+('Introduction à Java', 'James Gosling', '2010-09-15', 4, 'emprunté'),
+('LOrigine des espèces', 'Charles Darwin', '1859-11-24', 3, 'perdu'),
+('La Révolution Française', 'Jules Michelet', '1847-01-01', 5, 'en réparation');
+ALTER TABLE Livre
+set restriction_age=15 where id/2=0;
 
 CREATE TABLE ExemplaireLivre (
     IdExemplaireLivre SERIAL PRIMARY KEY,
     IdLivre INTEGER NOT NULL REFERENCES Livre(IdLivre),
     CodeBarre VARCHAR(50) UNIQUE,
     DateAcquisition DATE DEFAULT CURRENT_DATE,
-    Etat VARCHAR(20) DEFAULT 'bon' CHECK (Etat IN ('bon', 'moyen', 'mauvais', 'hors service'))
+    Etat VARCHAR(20) DEFAULT 'bon' CHECK (Etat IN ('bon', 'moyen', 'mauvais', 'hors service')),
+    Status INT DEFAULT 1 CHECK (Status IN (0, 1))
 );
+INSERT INTO ExemplaireLivre (IdLivre, CodeBarre, DateAcquisition, Etat, Status) VALUES
+(1, 'EX001', '2020-01-01', 'bon', 1),
+(1, 'EX002', '2021-06-01', 'moyen', 1),
+(2, 'EX003', '2022-03-12', 'bon', 1),
+(3, 'EX004', '2022-08-25', 'mauvais', 0),
+(4, 'EX005', '2019-11-05', 'hors service', 0),
+(5, 'EX006', '2023-01-10', 'bon', 1);
 
 CREATE TABLE CategorieLivre (
     IdCatLivre SERIAL PRIMARY KEY,
     Categorie VARCHAR(50) NOT NULL UNIQUE
 );
+INSERT INTO CategorieLivre (Categorie) VALUES
+('Philosophie'),
+('Science Fiction'),
+('Education'),
+('Biographie'),
+('Politique');
 
 CREATE TABLE LivreCategorie (
     IdCatLivre INTEGER NOT NULL REFERENCES CategorieLivre(IdCatLivre),
     IdLivre INTEGER NOT NULL REFERENCES Livre(IdLivre),
     PRIMARY KEY (IdCatLivre, IdLivre)
 );
+INSERT INTO LivreCategorie (IdCatLivre, IdLivre) VALUES
+(1, 2),
+(2, 1), 
+(3, 3), 
+(4, 5), 
+(5, 5); 
+
 
 CREATE TABLE Pret (
     IdPret SERIAL PRIMARY KEY,
-    TypePret VARCHAR(20) NOT NULL CHECK (TypePret IN ('standard', 'prolongé', 'express')),
-    Date_emprunt TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    Date_rendu TIMESTAMP,
-    Date_rendu_prevue TIMESTAMP NOT NULL,
+    TypePret VARCHAR(20) NOT NULL 
+        CHECK (TypePret IN ( 'sur_place', 'a_domicile')),
+    
+    Date_emprunt DATE NOT NULL DEFAULT CURRENT_DATE,
+    Date_rendu DATE,
+    Date_rendu_prevue DATE NOT NULL,
+
+    is_prolonged BOOLEAN DEFAULT FALSE,
+
     IdAdherent INTEGER NOT NULL REFERENCES Adherent(IdAdherent),
     IdExemplaireLivre INTEGER NOT NULL REFERENCES ExemplaireLivre(IdExemplaireLivre),
+
     CONSTRAINT check_dates CHECK (Date_rendu IS NULL OR Date_rendu >= Date_emprunt)
 );
-
 CREATE TABLE Penalite (
     IdPenalite SERIAL PRIMARY KEY,
     IdAdherent INTEGER NOT NULL REFERENCES Adherent(IdAdherent),
@@ -89,6 +131,14 @@ CREATE TABLE Penalite (
     DatePenalite DATE NOT NULL DEFAULT CURRENT_DATE,
     Paye BOOLEAN NOT NULL DEFAULT FALSE,
     Motif VARCHAR(255)
+);
+
+CREATE TABLE adherent_quota ( 
+    id_adherent INTEGER NOT NULL REFERENCES Adherent(IdAdherent)  ,
+    quota_surplace INTEGER NOT NULL DEFAULT 0,
+    quota_emprunter INTEGER NOT NULL DEFAULT 0,
+
+        
 );
 
 CREATE INDEX idx_livre_titre ON Livre(Titre);

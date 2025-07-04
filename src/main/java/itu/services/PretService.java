@@ -1,85 +1,156 @@
 package itu.services;
 
+import itu.models.Adherent;
+import itu.models.ExemplaireLivre;
 import itu.models.Pret;
+import itu.models.AdherentQuota;
+import itu.models.Profil;
+import itu.models.Livre;
+import itu.repositories.AdherentRepository;
+import itu.repositories.AbonnementRepository;
+import itu.repositories.ExemplaireLivreRepository;
 import itu.repositories.PretRepository;
+import itu.repositories.AdherentQuotaRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
 import org.springframework.transaction.annotation.Transactional;
+import java.time.LocalDate;
+import java.time.Period;
+
+
 import java.util.List;
-import java.util.Map;
-import java.util.stream.Collectors;
 
 @Service
-@Transactional
 public class PretService {
-    
+
     @Autowired
     private PretRepository pretRepository;
 
-    public List<Pret> findAll() {
+    @Autowired
+    private AdherentRepository adherentRepository;
+
+    @Autowired
+    private ExemplaireLivreRepository exemplaireLivreRepository;
+
+     @Autowired
+    private AbonnementRepository abonnementRepository;
+
+     @Autowired
+    private AdherentQuotaRepository adherentQuotaRepository;
+
+
+    // ✅ Création simple de prêt (sans quota, sans restriction)
+public Pret creerPretSimple(Long idAdherent, Long idExemplaire, String typePret, int joursPret) {
+    Adherent adherent = adherentRepository.findById(idAdherent)
+            .orElseThrow(() -> new RuntimeException("Adhérent introuvable"));
+
+    ExemplaireLivre exemplaire = exemplaireLivreRepository.findById(idExemplaire)
+            .orElseThrow(() -> new RuntimeException("Exemplaire introuvable"));
+
+    // Vérification disponibilité
+    if (exemplaire.getStatus() != 1) {
+        throw new RuntimeException("L'exemplaire sélectionné n'est pas disponible.");
+    }
+
+
+    // Vérification quota
+    AdherentQuota quota = adherentQuotaRepository.findById(idAdherent)
+            .orElseThrow(() -> new RuntimeException("Quota de l'adhérent introuvable."));
+
+    Profil profil = adherent.getProfil(); // ou adherentRepository.findById(...).getProfil();
+
+
+     Livre livre = exemplaire.getLivre();
+    Integer restrictionAge = livre.getRestrictionAge();
+    if (restrictionAge != null) {
+        int age = Period.between(adherent.getDateNaissance(), LocalDate.now()).getYears();
+        if (age < restrictionAge) {
+            throw new RuntimeException("L'adhérent doit avoir au moins " + restrictionAge + " ans pour emprunter ce livre.");
+        }
+    }
+
+    if ("sur_place".equalsIgnoreCase(typePret)) {
+        if (quota.getQuotaSurPlace() >= profil.getQuotaMaxSurPlace()) {
+            throw new RuntimeException("Le quota de prêts sur place est atteint.");
+        }
+        quota.setQuotaSurPlace(quota.getQuotaSurPlace() + 1);
+    } else {
+        if (quota.getQuotaEmprunter() >= profil.getQuotaMaxEmprunter()) {
+            throw new RuntimeException("Le quota de prêts à domicile est atteint.");
+        }
+        quota.setQuotaEmprunter(quota.getQuotaEmprunter() + 1);
+    }
+
+    // Calcul des dates
+    LocalDate today = LocalDate.now();
+
+    if (!abonnementRepository.isAbonneAlaDate(adherent, today)) {
+    throw new RuntimeException("L'adhérent doit avoir un abonnement valide à la date du prêt.");
+}
+    LocalDate dateRenduPrevue = "sur_place".equalsIgnoreCase(typePret)
+            ? today
+            : today.plusDays(joursPret);
+
+    Pret pret = new Pret();
+    pret.setTypePret(typePret);
+    pret.setDateEmprunt(today);
+    pret.setDateRenduPrevue(dateRenduPrevue);
+    pret.setAdherent(adherent);
+    pret.setExemplaireLivre(exemplaire);
+
+    // Sauvegarde
+    exemplaire.setStatus(0); // indisponible
+    exemplaireLivreRepository.save(exemplaire);
+
+    adherentQuotaRepository.save(quota); // mettre à jour le quota utilisé
+
+    return pretRepository.save(pret);
+}
+
+
+
+    // ✅ Lire tous les prêts
+    public List<Pret> listerTous() {
         return pretRepository.findAllWithDetails();
     }
 
-    public Pret findById(Long id) {
-        return pretRepository.findByIdWithDetails(id);
+    // ✅ Lire un prêt par ID
+    public Pret getById(Long id) {
+        return pretRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Prêt introuvable"));
     }
 
-    public List<Pret> findEmpruntsEnCours() {
-        return pretRepository.findEmpruntsEnCours();
+    // ✅ Supprimer un prêt
+    public void supprimer(Long id) {
+        Pret pret = getById(id);
+        pretRepository.delete(pret);
     }
 
-    public List<Pret> findEmpruntsEnRetard() {
-        return pretRepository.findEmpruntsEnRetard();
-    }
+    // ✅ Rendre un prêt (date de rendu = aujourd’hui)
+@Transactional
+public void rendre(Long idPret, LocalDate dateRendu) {
+    Pret pret = getById(idPret);
+    pret.setDateRendu(dateRendu); // → date choisie par l'utilisateur
+    pretRepository.save(pret);
 
-    public List<Pret> findEmpruntsParAdherent(Long adherentId) {
-        return pretRepository.findByAdherentIdAdherentOrderByDateEmpruntDesc(adherentId);
-    }
+    ExemplaireLivre exemplaire = pret.getExemplaireLivre();
+    exemplaire.setStatus(1); // disponible
+    exemplaireLivreRepository.save(exemplaire);
 
-    public List<Pret> findEmpruntsEnCoursParAdherent(Long adherentId) {
-        return pretRepository.findEmpruntsEnCoursParAdherent(adherentId);
-    }
+    Adherent adherent = pret.getAdherent();
 
-    public Map<Long, List<Pret>> getEmpruntsEnCoursParAdherent() {
-        List<Pret> empruntsEnCours = findEmpruntsEnCours();
-        return empruntsEnCours.stream()
-            .collect(Collectors.groupingBy(pret -> pret.getAdherent().getIdAdherent()));
-    }
+    AdherentQuota quota = adherentQuotaRepository.findById(adherent.getIdAdherent())
+        .orElseThrow(() -> new RuntimeException("Quota adhérent introuvable"));
 
-    public long countEmpruntsEnCours() {
-        return pretRepository.countEmpruntsEnCours();
-    }
+    quota.setQuotaEmprunter(quota.getQuotaEmprunter() - 1);
+    adherentQuotaRepository.save(quota);
+}
 
-    public long countEmpruntsEnRetard() {
-        return pretRepository.countEmpruntsEnRetard();
-    }
 
-    public long countEmpruntsParAdherent(Long adherentId) {
-        return pretRepository.countEmpruntsEnCoursParAdherent(adherentId);
-    }
-
-    public Pret save(Pret pret) {
+    // ✅ Mettre à jour un prêt
+    public Pret modifierPret(Pret pret) {
         return pretRepository.save(pret);
     }
-
-    public void delete(Long id) {
-        pretRepository.deleteById(id);
-    }
-
-    public Pret rendreExemplaire(Long pretId) {
-        Pret pret = findById(pretId);
-        if (pret != null && pret.isEnCours()) {
-            pret.setDateRendu(java.time.LocalDateTime.now());
-            return save(pret);
-        }
-        return pret;
-    }
-
-    public List<Pret> findEmpruntsARendreBientot() {
-        return pretRepository.findEmpruntsARendreBientot();
-    }
-
-    public List<Pret> findHistoriqueEmpruntsAdherent(Long adherentId) {
-        return pretRepository.findByAdherentIdAdherentOrderByDateEmpruntDesc(adherentId);
-    }
 }
+

@@ -1,6 +1,8 @@
 package itu.services;
 
 import itu.models.Adherent;
+import itu.models.AdherentQuota;
+import itu.repositories.AdherentQuotaRepository;
 import itu.models.Profil;
 import itu.repositories.AdherentRepository;
 import itu.repositories.ProfilRepository;
@@ -22,6 +24,9 @@ public class AdherentService {
     
     @Autowired
     private ProfilRepository profilRepository;
+
+     @Autowired
+    private AdherentQuotaRepository adherentQuotaRepository;
 
     public List<Adherent> findAll() {
         return adherentRepository.findAllWithProfil();
@@ -76,28 +81,36 @@ public class AdherentService {
 
 
 
-    @Transactional
-    public Adherent creerAdherent(String nom, String prenom, LocalDate dateNaissance, 
-                                String email, String motDePasse, Long idProfil) {
-        
-        if (adherentRepository.existsByEmail(email)) {
-            throw new RuntimeException("Un adhérent avec cet email existe déjà");
-        }
+@Transactional
+public Adherent creerAdherent(String nom, String prenom, LocalDate dateNaissance,
+                              String email, String motDePasse, Long idProfil) {
 
-        Profil profil = profilRepository.findById(idProfil)
-            .orElseThrow(() -> new RuntimeException("Profil non trouvé"));
-
-        Adherent adherent = new Adherent();
-        adherent.setNom(nom);
-        adherent.setPrenom(prenom);
-        adherent.setDateNaissance(dateNaissance);
-        adherent.setEmail(email);
-        adherent.setMotDePasse(motDePasse); // Note: En production, hashage du mot de passe
-        adherent.setDateInscription(LocalDate.now());
-        adherent.setProfil(profil);
-
-        return adherentRepository.save(adherent);
+    if (adherentRepository.existsByEmail(email)) {
+        throw new RuntimeException("Un adhérent avec cet email existe déjà");
     }
+
+    Profil profil = profilRepository.findById(idProfil)
+        .orElseThrow(() -> new RuntimeException("Profil non trouvé"));
+
+    Adherent adherent = new Adherent();
+    adherent.setNom(nom);
+    adherent.setPrenom(prenom);
+    adherent.setDateNaissance(dateNaissance);
+    adherent.setEmail(email);
+    adherent.setMotDePasse(motDePasse);
+    adherent.setDateInscription(LocalDate.now());
+    adherent.setProfil(profil);
+
+ 
+  Adherent save= adherentRepository.save(adherent);
+  return save;
+
+    
+}
+
+
+
+
 
     public List<Adherent> listerTous() {
         return adherentRepository.findAll();
