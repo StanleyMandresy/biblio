@@ -72,13 +72,7 @@ public class AdherentService {
         return adherentRepository.findByProfilIdProfil(profilId);
     }
 
-    public boolean peutEmprunter(Long adherentId) {
-        Adherent adherent = findById(adherentId);
-        if (adherent == null) return false;
-        
-        return adherent.peutEmprunter() && adherent.getNombrePenalitesNonPayees() == 0;
-    }
-
+  
 
 
 @Transactional

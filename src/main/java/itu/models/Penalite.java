@@ -1,50 +1,31 @@
 package itu.models;
 
 import jakarta.persistence.*;
-import java.math.BigDecimal;
-import java.util.Date;
-import org.springframework.format.annotation.DateTimeFormat;
+import java.time.LocalDate;
 
 @Entity
-@Table(name = "penalite")
+@Table(name = "Penalite")
 public class Penalite {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "idpenalite")
     private Long idPenalite;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "idadherent", nullable = false)
+    @ManyToOne
+    @JoinColumn(name = "IdAdherent", nullable = false)
     private Adherent adherent;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "idpret")
+    @ManyToOne
+    @JoinColumn(name = "IdPret")
     private Pret pret;
 
-    @Column(nullable = false, precision = 10, scale = 2)
-    private BigDecimal montant;
+    @Column(name = "DateDebutPenalite", nullable = false)
+    private LocalDate dateDebutPenalite = LocalDate.now();
 
-    @Column(name = "datepenalite", nullable = false)
-    @Temporal(TemporalType.DATE)
-    @DateTimeFormat(pattern = "yyyy-MM-dd")
-    private Date datePenalite;
+    @Column(name = "DatelevePenalite", nullable = false)
+    private LocalDate datelevePenalite = LocalDate.now();
 
-    @Column(nullable = false)
-    private boolean paye = false;
-
-    @Column(length = 255)
-    private String motif;
-
-    public Penalite(Long idPenalite, Adherent adherent, Pret pret, BigDecimal montant, Date datePenalite, boolean paye,
-            String motif) {
-        this.idPenalite = idPenalite;
-        this.adherent = adherent;
-        this.pret = pret;
-        this.montant = montant;
-        this.datePenalite = datePenalite;
-        this.paye = paye;
-        this.motif = motif;
-    }
+    // Getters & Setters
 
     public Long getIdPenalite() {
         return idPenalite;
@@ -70,36 +51,19 @@ public class Penalite {
         this.pret = pret;
     }
 
-    public BigDecimal getMontant() {
-        return montant;
+    public LocalDate getDateDebutPenalite() {
+        return dateDebutPenalite;
     }
 
-    public void setMontant(BigDecimal montant) {
-        this.montant = montant;
+    public void setDateDebutPenalite(LocalDate dateDebutPenalite) {
+        this.dateDebutPenalite = dateDebutPenalite;
     }
 
-    public Date getDatePenalite() {
-        return datePenalite;
+    public LocalDate getDatelevePenalite() {
+        return datelevePenalite;
     }
 
-    public void setDatePenalite(Date datePenalite) {
-        this.datePenalite = datePenalite;
+    public void setDatelevePenalite(LocalDate datelevePenalite) {
+        this.datelevePenalite = datelevePenalite;
     }
-
-    public boolean isPaye() {
-        return paye;
-    }
-
-    public void setPaye(boolean paye) {
-        this.paye = paye;
-    }
-
-    public String getMotif() {
-        return motif;
-    }
-
-    public void setMotif(String motif) {
-        this.motif = motif;
-    }
-
 }

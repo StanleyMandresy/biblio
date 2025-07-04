@@ -127,10 +127,8 @@ CREATE TABLE Penalite (
     IdPenalite SERIAL PRIMARY KEY,
     IdAdherent INTEGER NOT NULL REFERENCES Adherent(IdAdherent),
     IdPret INTEGER REFERENCES Pret(IdPret),
-    Montant DECIMAL(10,2) NOT NULL CHECK (Montant >= 0),
-    DatePenalite DATE NOT NULL DEFAULT CURRENT_DATE,
-    Paye BOOLEAN NOT NULL DEFAULT FALSE,
-    Motif VARCHAR(255)
+    DateDebutPenalite DATE NOT NULL DEFAULT CURRENT_DATE,
+    DatelevePenalite DATE NOT NULL DEFAULT CURRENT_DATE
 );
 
 CREATE TABLE adherent_quota ( 

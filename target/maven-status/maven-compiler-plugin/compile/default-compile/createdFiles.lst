@@ -1,10 +1,12 @@
 itu\models\Adherent.class
+itu\repositories\PenaliteRepository.class
 itu\services\AdherentService.class
 itu\repositories\PretRepository.class
 itu\services\ProfilService.class
 itu\models\TypeLivre.class
 itu\services\AbonnementService.class
 itu\models\Livre.class
+itu\controllers\PenaliteController.class
 itu\repositories\TypeRepository.class
 itu\services\PretService.class
 itu\repositories\ProfilRepository.class
@@ -13,6 +15,7 @@ itu\services\LivreService.class
 itu\controllers\PretController.class
 itu\repositories\AdherentRepository.class
 itu\repositories\LivreRepository.class
+itu\services\PenaliteService.class
 itu\repositories\AbonnementRepository.class
 itu\repositories\AdherentQuotaRepository.class
 itu\models\Abonnement.class

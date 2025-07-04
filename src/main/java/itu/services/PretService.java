@@ -3,12 +3,14 @@ package itu.services;
 import itu.models.Adherent;
 import itu.models.ExemplaireLivre;
 import itu.models.Pret;
+import itu.models.Penalite;
 import itu.models.AdherentQuota;
 import itu.models.Profil;
 import itu.models.Livre;
 import itu.repositories.AdherentRepository;
 import itu.repositories.AbonnementRepository;
 import itu.repositories.ExemplaireLivreRepository;
+import itu.repositories.PenaliteRepository;
 import itu.repositories.PretRepository;
 import itu.repositories.AdherentQuotaRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -39,8 +41,11 @@ public class PretService {
      @Autowired
     private AdherentQuotaRepository adherentQuotaRepository;
 
+     @Autowired
+    private PenaliteRepository penaliteRepository;
 
-    // ✅ Création simple de prêt (sans quota, sans restriction)
+
+
 public Pret creerPretSimple(Long idAdherent, Long idExemplaire, String typePret, int joursPret) {
     Adherent adherent = adherentRepository.findById(idAdherent)
             .orElseThrow(() -> new RuntimeException("Adhérent introuvable"));
@@ -99,43 +104,41 @@ public Pret creerPretSimple(Long idAdherent, Long idExemplaire, String typePret,
     pret.setAdherent(adherent);
     pret.setExemplaireLivre(exemplaire);
 
-    // Sauvegarde
-    exemplaire.setStatus(0); // indisponible
+    
+    exemplaire.setStatus(0); 
     exemplaireLivreRepository.save(exemplaire);
 
-    adherentQuotaRepository.save(quota); // mettre à jour le quota utilisé
+    adherentQuotaRepository.save(quota); 
 
     return pretRepository.save(pret);
 }
 
 
 
-    // ✅ Lire tous les prêts
     public List<Pret> listerTous() {
         return pretRepository.findAllWithDetails();
     }
 
-    // ✅ Lire un prêt par ID
+
     public Pret getById(Long id) {
         return pretRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Prêt introuvable"));
     }
 
-    // ✅ Supprimer un prêt
+
     public void supprimer(Long id) {
         Pret pret = getById(id);
         pretRepository.delete(pret);
     }
 
-    // ✅ Rendre un prêt (date de rendu = aujourd’hui)
 @Transactional
 public void rendre(Long idPret, LocalDate dateRendu) {
     Pret pret = getById(idPret);
-    pret.setDateRendu(dateRendu); // → date choisie par l'utilisateur
+    pret.setDateRendu(dateRendu);
     pretRepository.save(pret);
 
     ExemplaireLivre exemplaire = pret.getExemplaireLivre();
-    exemplaire.setStatus(1); // disponible
+    exemplaire.setStatus(1); 
     exemplaireLivreRepository.save(exemplaire);
 
     Adherent adherent = pret.getAdherent();
@@ -143,12 +146,31 @@ public void rendre(Long idPret, LocalDate dateRendu) {
     AdherentQuota quota = adherentQuotaRepository.findById(adherent.getIdAdherent())
         .orElseThrow(() -> new RuntimeException("Quota adhérent introuvable"));
 
-    quota.setQuotaEmprunter(quota.getQuotaEmprunter() - 1);
+    
+    if ("sur_place".equalsIgnoreCase(pret.getTypePret())) {
+        quota.setQuotaSurPlace(quota.getQuotaSurPlace() - 1);
+    } else {
+        quota.setQuotaEmprunter(quota.getQuotaEmprunter() - 1);
+    }
     adherentQuotaRepository.save(quota);
+
+    
+    if (dateRendu.isAfter(pret.getDateRenduPrevue())) {
+        Profil profil = adherent.getProfil(); 
+        int dureePenalite = profil.getDureePenalite() != null ? profil.getDureePenalite() : 0;
+
+        Penalite penalite = new Penalite();
+        penalite.setAdherent(adherent);
+        penalite.setPret(pret);
+        penalite.setDateDebutPenalite(dateRendu);
+        penalite.setDatelevePenalite(dateRendu.plusDays(dureePenalite));
+
+        penaliteRepository.save(penalite);
+    }
 }
 
 
-    // ✅ Mettre à jour un prêt
+
     public Pret modifierPret(Pret pret) {
         return pretRepository.save(pret);
     }

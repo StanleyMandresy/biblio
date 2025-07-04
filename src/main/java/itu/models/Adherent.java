@@ -106,10 +106,5 @@ public class Adherent {
         return getNombreEmpruntsEnCours() < profil.getQuotaMaxEmprunter();
     }
 
-    public long getNombrePenalitesNonPayees() {
-        if (penalites == null) return 0;
-        return penalites.stream()
-            .filter(penalite -> !penalite.isPaye())
-            .count();
-    }
+ 
 }

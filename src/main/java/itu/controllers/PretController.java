@@ -120,7 +120,7 @@ public String rendrePretAvecDate(@RequestParam Long idPret,
     } catch (Exception e) {
         redirectAttributes.addFlashAttribute("errorMessage", e.getMessage());
     }
-    return "redirect:/prets/liste";
+    return "redirect:/liste";
 }
 
 }

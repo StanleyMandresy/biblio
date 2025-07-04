@@ -11,6 +11,7 @@ G:\biblio\src\main\java\itu\repositories\AbonnementRepository.java
 G:\biblio\src\main\java\itu\repositories\TypeRepository.java
 G:\biblio\src\main\java\itu\repositories\PretRepository.java
 G:\biblio\src\main\java\itu\services\ProfilService.java
+G:\biblio\src\main\java\itu\services\PenaliteService.java
 G:\biblio\src\main\java\itu\services\PretService.java
 G:\biblio\src\main\java\itu\models\Profil.java
 G:\biblio\src\main\java\itu\services\ExemplaireLivreService.java
@@ -25,6 +26,8 @@ G:\biblio\src\main\java\itu\repositories\ProfilRepository.java
 G:\biblio\src\main\java\itu\models\ExemplaireLivre.java
 G:\biblio\src\main\java\itu\controllers\PretController.java
 G:\biblio\src\main\java\itu\models\Type.java
+G:\biblio\src\main\java\itu\repositories\PenaliteRepository.java
 G:\biblio\src\main\java\itu\models\Penalite.java
 G:\biblio\src\main\java\itu\services\TypeService.java
 G:\biblio\src\main\java\itu\models\CategorieLivre.java
+G:\biblio\src\main\java\itu\controllers\PenaliteController.java
