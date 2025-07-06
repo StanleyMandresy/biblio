@@ -5,6 +5,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import java.util.List;
+import java.util.Optional;
 
 public interface AdherentRepository extends JpaRepository<Adherent, Long> {
     
@@ -52,5 +53,7 @@ public interface AdherentRepository extends JpaRepository<Adherent, Long> {
 
 
     boolean existsByEmail(String email);
+
+       Optional<Adherent> findByEmailAndMotDePasse(String email, String motDePasse);
 
 }

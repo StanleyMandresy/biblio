@@ -12,6 +12,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 
 import java.util.List;
+import java.util.Optional;
 import java.time.LocalDate;
 
 @Service
@@ -108,6 +109,9 @@ public Adherent creerAdherent(String nom, String prenom, LocalDate dateNaissance
 
     public List<Adherent> listerTous() {
         return adherentRepository.findAll();
+    }
+     public Optional<Adherent> authentifier(String email, String motDePasse) {
+        return adherentRepository.findByEmailAndMotDePasse(email, motDePasse);
     }
 
 }

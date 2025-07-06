@@ -138,7 +138,15 @@ CREATE TABLE adherent_quota (
 
         
 );
-
+CREATE TABLE Reservation (
+    idReservation SERIAL PRIMARY KEY,
+    idAdherent INT NOT NULL REFERENCES Adherent(idAdherent),
+    idLivre INT NOT NULL REFERENCES Livre(idLivre),
+    idExemplaireLivre INT REFERENCES ExemplaireLivre(idExemplaireLivre),
+    date_reservation DATE NOT NULL DEFAULT CURRENT_DATE,
+    date_debut_reservation DATE,
+    jourreservation INT
+);
 CREATE INDEX idx_livre_titre ON Livre(Titre);
 CREATE INDEX idx_livre_auteur ON Livre(Auteur);
 CREATE INDEX idx_pret_user ON Pret(IdAdherent);
@@ -147,7 +155,7 @@ CREATE INDEX idx_pret_dates ON Pret(Date_emprunt, Date_rendu);
 CREATE INDEX idx_user_profil ON Adherent(Id_Profil);
 
 
-CREATE TABLE "User" (
+CREATE TABLE Users (
     IdUser SERIAL PRIMARY KEY,
     Nom VARCHAR(100) NOT NULL,
     Prenom VARCHAR(100),
@@ -156,3 +164,7 @@ CREATE TABLE "User" (
     DateNaissance DATE,
     Id_Profil INTEGER NOT NULL REFERENCES Profil(Id_Profil)
 );
+INSERT INTO Users (Nom, Prenom, Mdp, Email, DateNaissance, Id_Profil)
+VALUES ('admin', 'super', 'admin123', 'admin@mail.com', '1990-01-01', 3);
+
+
