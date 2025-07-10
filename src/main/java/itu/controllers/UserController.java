@@ -28,7 +28,7 @@ public class UserController {
         return userService.login(email, mdp)
                 .map(user -> {
                     session.setAttribute("userConnecte", user);
-                    return "redirect:/prets";
+                    return "redirect:/dashboard";
                 })
                 .orElseGet(() -> {
                     model.addAttribute("erreur", "Email ou mot de passe incorrect");

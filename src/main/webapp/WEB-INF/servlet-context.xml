@@ -23,4 +23,5 @@
 
     <!-- Configuration for static resources -->
     <mvc:resources mapping="/resources/**" location="/resources/" />
+
 </beans>

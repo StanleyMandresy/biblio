@@ -1,10 +1,98 @@
-
-
+<%@ page contentType="text/html;charset=UTF-8" pageEncoding="UTF-8" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-
 <html>
 <head>
-    <title>Liste des livres</title>
+    <title>Liste des livres - Café Littéraire</title>
+    <style>
+        body {
+            background-color: #fef6f0;
+            color: #4e342e;
+            font-family: 'Georgia', serif;
+            margin: 0;
+            padding: 20px;
+        }
+
+        h2, h3 {
+            color: #4e342e;
+            border-bottom: 2px solid #a1887f;
+            padding-bottom: 5px;
+        }
+
+        form {
+            background-color: rgba(255, 255, 255, 0.7);
+            padding: 15px;
+            border-radius: 5px;
+            margin-bottom: 20px;
+        }
+
+        label {
+            display: inline-block;
+            width: 80px;
+            margin-right: 10px;
+            color: #4e342e;
+        }
+
+        input[type="text"],
+        input[type="number"],
+        select {
+            padding: 5px;
+            margin-bottom: 10px;
+            border: 1px solid #a1887f;
+            border-radius: 3px;
+        }
+
+        button {
+            background-color: #a1887f;
+            color: white;
+            border: none;
+            padding: 8px 15px;
+            border-radius: 3px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        button:hover {
+            background-color: #ff7043;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+
+        th {
+            background-color: #a1887f;
+            color: white;
+            padding: 10px;
+            text-align: left;
+        }
+
+        td {
+            padding: 8px;
+            border-bottom: 1px solid #d7ccc8;
+        }
+
+        tr:hover {
+            background-color: rgba(255, 112, 67, 0.1);
+        }
+
+        hr {
+            border: 0;
+            height: 1px;
+            background-color: #d7ccc8;
+            margin: 20px 0;
+        }
+
+        a {
+            color: #ff7043;
+            text-decoration: none;
+        }
+
+        a:hover {
+            text-decoration: underline;
+        }
+    </style>
 </head>
 <body>
 
@@ -53,7 +141,7 @@
 <hr/>
 
 <h3>Résultats</h3>
-<table border="1" cellpadding="5" cellspacing="0">
+<table>
     <thead>
         <tr>
             <th>Titre</th>
@@ -77,9 +165,9 @@
                 </td>
             </tr>
         </c:forEach>
-       <c:if test="${empty livres}">
-    <tr><td colspan="5">Aucun livre trouvé.</td></tr>
-</c:if>
+        <c:if test="${empty livres}">
+            <tr><td colspan="5">Aucun livre trouvé.</td></tr>
+        </c:if>
     </tbody>
 </table>
 

@@ -15,6 +15,7 @@ I:\biblio\src\main\java\itu\models\AdherentQuota.java
 I:\biblio\src\main\java\itu\services\UserService.java
 I:\biblio\src\main\java\itu\services\TypeLivreService.java
 I:\biblio\src\main\java\itu\repositories\ExemplaireLivreRepository.java
+I:\biblio\src\main\java\itu\controllers\HomeController.java
 I:\biblio\src\main\java\itu\models\ExemplaireLivre.java
 I:\biblio\src\main\java\itu\repositories\UserRepository.java
 I:\biblio\src\main\java\itu\services\LivreService.java
@@ -42,3 +43,4 @@ I:\biblio\src\main\java\itu\models\Reservation.java
 I:\biblio\src\main\java\itu\services\PenaliteService.java
 I:\biblio\src\main\java\itu\repositories\ProfilRepository.java
 I:\biblio\src\main\java\itu\controllers\UserController.java
+I:\biblio\src\main\java\itu\controllers\DashboardController.java

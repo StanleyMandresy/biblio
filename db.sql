@@ -130,6 +130,7 @@ CREATE TABLE Penalite (
     DateDebutPenalite DATE NOT NULL DEFAULT CURRENT_DATE,
     DatelevePenalite DATE NOT NULL DEFAULT CURRENT_DATE
 );
+ALTER TABLE Penalite ADD COLUMN Leve BOOLEAN NOT NULL DEFAULT FALSE;
 
 CREATE TABLE adherent_quota ( 
     id_adherent INTEGER NOT NULL REFERENCES Adherent(IdAdherent)  ,
