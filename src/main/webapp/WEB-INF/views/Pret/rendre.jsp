@@ -99,6 +99,9 @@
         }
     </style>
 </head>
+<c:if test="${not empty errorMessage}">
+    <div class="error-message">${errorMessage}</div>
+</c:if>
 <body>
 <h2>Rendre le prêt de <span class="book-title">${pret.exemplaireLivre.livre.titre}</span></h2>
 

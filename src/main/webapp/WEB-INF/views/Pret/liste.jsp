@@ -72,26 +72,48 @@
             color: #2e7d32;
             font-weight: bold;
         }
+         .prolonge {
+            color: gray;
+            font-weight: bold;
+        }
+
 
         .en-cours {
             color: #ff7043;
             font-weight: bold;
         }
     </style>
+
 </head>
+<c:if test="${not empty errorMessage}">
+    <div class="error-message">${errorMessage}</div>
+</c:if>
+
 <body>
+<h2>
+    <c:choose>
+        <c:when test="${affichageParAdherent}">
+            Mes prêts
+        </c:when>
+        <c:otherwise>
+            Liste des prêts (admin)
+        </c:otherwise>
+    </c:choose>
+</h2>
 
-<h2>Liste des prêts</h2>
-
-<div style="margin-bottom: 20px;">
-    <a href="${pageContext.request.contextPath}/prets/add?type=sur_place">Créer prêt sur place</a>
-    <a href="${pageContext.request.contextPath}/prets/add?type=a_domicile">Créer prêt à domicile</a>
-</div>
+<c:if test="${not affichageParAdherent}">
+    <div style="margin-bottom: 20px;">
+        <a href="${pageContext.request.contextPath}/prets/add?type=sur_place">Créer prêt sur place</a>
+        <a href="${pageContext.request.contextPath}/prets/add?type=a_domicile">Créer prêt à domicile</a>
+    </div>
+</c:if>
 
 <table>
     <thead>
         <tr>
-            <th>Adhérent</th>
+            <c:if test="${not affichageParAdherent}">
+        <th>Adhérent</th>
+    </c:if>
             <th>Livre</th>
             <th>Exemplaire</th>
             <th>Date Emprunt</th>
@@ -104,7 +126,9 @@
     <tbody>
         <c:forEach var="pret" items="${prets}">
             <tr>
-                <td>${pret.adherent.nom} ${pret.adherent.prenom}</td>
+               <c:if test="${not affichageParAdherent}">
+    <td>${pret.adherent.nom} ${pret.adherent.prenom}</td>
+</c:if>
                 <td>${pret.exemplaireLivre.livre.titre}</td>
                 <td>${pret.exemplaireLivre.codeBarre}</td>
          <td>${pret.dateEmprunt}</td>
@@ -115,24 +139,57 @@
                         <c:when test="${not empty pret.dateRendu}">
                             <span class="rendu">Rendu</span>
                         </c:when>
+                          <c:when test="${ pret.isProlonged}">
+                            <span class="prolonge">Prolongé</span>
+                        </c:when>
                         <c:otherwise>
                             <span class="en-cours">En cours</span>
                         </c:otherwise>
                     </c:choose>
                 </td>
                 <td>
-                    <c:if test="${empty pret.dateRendu}">
+                    <c:if test="${empty pret.dateRendu  and not pret.isProlonged and not affichageParAdherent}">
                         <form action="${pageContext.request.contextPath}/prets/rendre/${pret.idPret}" method="get" style="display:inline;">
                             <input type="submit" value="Rendre" />
                         </form>
-                        <form action="${pageContext.request.contextPath}/prets/prolonger/${pret.idPret}" method="post" style="display:inline;">
+                         </c:if>
+                           <c:if test="${empty pret.dateRendu and  affichageParAdherent and not pret.isProlonged}">
+                        <form action="${pageContext.request.contextPath}/prets/prolonger/${pret.idPret}" method="get" style="display:inline;">
                             <input type="submit" value="Prolonger" />
                         </form>
-                    </c:if>
+                        </c:if>
+
                 </td>
             </tr>
         </c:forEach>
     </tbody>
 </table>
+      <c:if test="${ not affichageParAdherent}">
+<h2>Demandes de prolongation en attente</h2>
+<table>
+    <thead>
+        <tr>
+            <th>Prêt</th>
+            <th>Adhérent</th>
+            <th>Jours demandés</th>
+            <th>Action</th>
+        </tr>
+    </thead>
+    <tbody>
+        <c:forEach var="demande" items="${demandes}">
+            <tr>
+                <td>#${demande.pret.idPret}</td>
+                <td>${demande.pret.adherent.nom} ${demande.pret.adherent.prenom}</td>
+                <td>${demande.jourProlongement}</td>
+                <td>
+                    <form action="${pageContext.request.contextPath}/prets/prolongements/valider/${demande.idProlongement}" method="post">
+                        <button type="submit">Valider</button>
+                    </form>
+                </td>
+            </tr>
+        </c:forEach>
+    </tbody>
+</table>
+  </c:if>
 </body>
 </html>

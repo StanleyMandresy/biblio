@@ -168,4 +168,11 @@ CREATE TABLE Users (
 INSERT INTO Users (Nom, Prenom, Mdp, Email, DateNaissance, Id_Profil)
 VALUES ('admin', 'super', 'admin123', 'admin@mail.com', '1990-01-01', 3);
 
+CREATE TABLE Pret_Prolongement (
+    idProlongement SERIAL PRIMARY KEY,
+    idPret INTEGER NOT NULL REFERENCES Pret(idPret),
+    jour_prolongement INTEGER NOT NULL CHECK (jour_prolongement BETWEEN 1 AND 15),
+    est_valide BOOLEAN DEFAULT FALSE
+);
+
 

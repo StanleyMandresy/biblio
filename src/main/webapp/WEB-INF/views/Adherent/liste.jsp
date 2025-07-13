@@ -126,9 +126,9 @@
                 <td>${a.idAdherent}</td>
                 <td>${a.nom}</td>
                 <td>${a.prenom}</td>
-                <td class="date-cell"><fmt:formatDate value="${a.dateNaissance}" pattern="dd/MM/yyyy"/></td>
+                <td class="date-cell"><${a.dateNaissance}</td>
                 <td>${a.email}</td>
-                <td class="date-cell"><fmt:formatDate value="${a.dateInscription}" pattern="dd/MM/yyyy"/></td>
+                <td class="date-cell"><${a.dateInscription}</td>
                 <td>${a.profil.nomProfil}</td>
             </tr>
         </c:forEach>

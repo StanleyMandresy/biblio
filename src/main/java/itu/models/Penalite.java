@@ -25,6 +25,10 @@ public class Penalite {
     @Column(name = "DatelevePenalite", nullable = false)
     private LocalDate datelevePenalite = LocalDate.now();
 
+    @Column(name = "Leve")
+    private Boolean Leve = false;
+
+
     // Getters & Setters
 
     public Long getIdPenalite() {
@@ -66,4 +70,13 @@ public class Penalite {
     public void setDatelevePenalite(LocalDate datelevePenalite) {
         this.datelevePenalite = datelevePenalite;
     }
+      public Boolean getLeve() {
+        return Leve;
+    }
+
+    public void setLeve(Boolean Leve) {
+        this.Leve=Leve;
+    }
+
+
 }

@@ -66,6 +66,7 @@ public class AdherentController {
 
         return adherentService.authentifier(email, motDePasse)
                 .map(adherent -> {
+                 session.setAttribute("idAdherent", adherent.getIdAdherent());
                     session.setAttribute("adherentConnecte", adherent);
                     return "redirect:/livres";
                 })

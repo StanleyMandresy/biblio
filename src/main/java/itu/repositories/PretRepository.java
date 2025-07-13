@@ -8,7 +8,7 @@ import java.util.List;
 
 public interface PretRepository extends JpaRepository<Pret, Long> {
     
-   @Query("SELECT p FROM Pret p JOIN FETCH p.adherent JOIN FETCH p.exemplaireLivre el JOIN FETCH el.livre")
+   @Query("SELECT p FROM Pret p JOIN FETCH p.adherent JOIN FETCH p.exemplaireLivre el JOIN FETCH el.livre ")
 List<Pret> findAllWithDetails();
 
     @Query("SELECT p FROM Pret p " +
@@ -66,4 +66,6 @@ List<Pret> findAllWithDetails();
            "AND p.dateRenduPrevue BETWEEN CURRENT_TIMESTAMP AND CURRENT_TIMESTAMP + 3 DAY " +
            "ORDER BY p.dateRenduPrevue ASC")
     List<Pret> findEmpruntsARendreBientot();
+
+     List<Pret> findByAdherentIdAdherent(Long idAdherent);
 }

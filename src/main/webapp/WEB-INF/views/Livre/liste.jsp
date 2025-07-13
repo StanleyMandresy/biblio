@@ -95,8 +95,10 @@
     </style>
 </head>
 <body>
+   <button type="submit"><a href="${pageContext.request.contextPath}/prets/adherent">Voir vos prets</a></button>
 
 <h2>Recherche livres</h2>
+
 
 <form action="${pageContext.request.contextPath}/livres" method="get">
     <label>Titre :</label>

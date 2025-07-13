@@ -6,6 +6,7 @@ import itu.models.Livre;
 import itu.models.Pret;
 import itu.services.AdherentService;
 import itu.services.ExemplaireLivreService;
+import itu.services.PretProlongementService;
 import itu.repositories.ExemplaireLivreRepository;
 import itu.services.LivreService;
 import itu.services.PretService;
@@ -15,7 +16,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
-
+import jakarta.servlet.http.HttpSession;
 import java.time.LocalDate;
 import org.springframework.format.annotation.DateTimeFormat;
 
@@ -48,12 +49,33 @@ public class PretController {
     @Autowired
     private AdherentService adherentService;
 
+     @Autowired
+    private  PretProlongementService prolongementService;
+
     @GetMapping
     public String listerPrets(Model model) {
         List<Pret> prets = pretService.listerTous();
+        model.addAttribute("affichageParAdherent", false);
+         model.addAttribute("demandes", prolongementService.getDemandesNonValidees());
         model.addAttribute("prets", prets);
         return "Pret/liste";
     }
+
+     @GetMapping("/adherent")
+    public String listerPretsAdherent(Model model, HttpSession session) {
+        Long idAdherent = (Long) session.getAttribute("idAdherent");
+
+        if (idAdherent == null) {
+            model.addAttribute("erreur", "Vous devez être connecté");
+            return "redirect:/adherents/login";
+        }
+  model.addAttribute("affichageParAdherent", true);
+        List<Pret> prets = pretService.getPretsParAdherent(idAdherent);
+        model.addAttribute("prets", prets);
+
+        return "Pret/liste"; // JSP à créer
+    }
+
 @GetMapping("/add")
 public String afficherFormulaire(@RequestParam("type") String typePret, Model model) {
     // Charge les livres AVEC leurs exemplaires
@@ -120,7 +142,47 @@ public String rendrePretAvecDate(@RequestParam Long idPret,
     } catch (Exception e) {
         redirectAttributes.addFlashAttribute("errorMessage", e.getMessage());
     }
-    return "redirect:/liste";
+    return "redirect:/prets";
 }
+  @GetMapping("/prolonger/{idPret}")
+    public String formulaireDemande(@PathVariable Long idPret, Model model) {
+        model.addAttribute("idPret", idPret);
+        return "Pret/form-prolongement";
+    }
+@PostMapping("/demander")
+public String envoyerDemande(@RequestParam Long idPret,
+                             @RequestParam Integer jours,
+                             RedirectAttributes redirectAttributes,
+                             HttpSession session) {
+    try {
+        Pret pret = pretService.getById(idPret);
+
+        // Vérifie si l'utilisateur est connecté
+        Adherent adherent = (Adherent) session.getAttribute("adherentConnecte");
+        if (adherent == null || !pret.getAdherent().getIdAdherent().equals(adherent.getIdAdherent())) {
+            redirectAttributes.addFlashAttribute("errorMessage", "Accès non autorisé à ce prêt");
+            return "redirect:adherent";
+        }
+
+        // Vérifie et envoie la demande de prolongement
+        prolongementService.demanderProlongement(pret, jours);
+
+        redirectAttributes.addFlashAttribute("successMessage", "Demande de prolongement envoyée avec succès.");
+    } catch (RuntimeException e) {
+        redirectAttributes.addFlashAttribute("errorMessage", e.getMessage());
+    }
+    return "redirect:adherent";
+}
+@PostMapping("/prolongements/valider/{id}")
+public String validerProlongement(@PathVariable Long id, RedirectAttributes redirectAttributes) {
+    try {
+        prolongementService.validerProlongement(id);
+        redirectAttributes.addFlashAttribute("successMessage", "Prolongement validé avec succès !");
+    } catch (RuntimeException e) {
+        redirectAttributes.addFlashAttribute("errorMessage", e.getMessage());
+    }
+    return "redirect:/";
+}
+
 
 }

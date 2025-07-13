@@ -5,6 +5,7 @@ itu\services\ReservationService.class
 itu\controllers\LivreController.class
 itu\services\PretService.class
 itu\repositories\ProfilRepository.class
+itu\models\PretProlongement.class
 itu\services\LivreService.class
 itu\controllers\PretController.class
 itu\repositories\AdherentRepository.class
@@ -14,6 +15,7 @@ itu\services\UserService.class
 itu\models\Reservation.class
 itu\models\Abonnement.class
 itu\models\CategorieLivre.class
+itu\repositories\PretProlongementRepository.class
 itu\services\ExemplaireLivreService.class
 itu\models\User.class
 itu\controllers\ProfilController.class
@@ -28,6 +30,7 @@ itu\controllers\UserController.class
 itu\controllers\HomeController.class
 itu\models\TypeLivre.class
 itu\models\Livre.class
+itu\services\PretProlongementService.class
 itu\controllers\PenaliteController.class
 itu\controllers\AbonnementController.class
 itu\controllers\DashboardController.class

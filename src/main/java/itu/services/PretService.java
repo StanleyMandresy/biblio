@@ -174,5 +174,9 @@ public void rendre(Long idPret, LocalDate dateRendu) {
     public Pret modifierPret(Pret pret) {
         return pretRepository.save(pret);
     }
+
+        public List<Pret> getPretsParAdherent(Long idAdherent) {
+        return pretRepository.findByAdherentIdAdherent(idAdherent);
+    }
 }
 
