@@ -29,8 +29,12 @@ public class Reservation {
     @Column(name = "date_debut_reservation")
     private LocalDate dateDebutReservation;
 
-    @Column(name = "jour_reservation")
-    private Integer jourReservation;
+
+    @Column(name = "date_fin_reservation")
+    private LocalDate dateFinReservation;
+
+    @Column(name = "isApproved")
+private Boolean isApproved = false;
 
     // Getters and Setters
 
@@ -78,15 +82,30 @@ public class Reservation {
         return dateDebutReservation;
     }
 
+
+
     public void setDateDebutReservation(LocalDate dateDebutReservation) {
         this.dateDebutReservation = dateDebutReservation;
     }
 
-    public Integer getJourReservation() {
-        return jourReservation;
+     public LocalDate getDateFinReservation() {
+        return dateFinReservation;
     }
 
-    public void setJourReservation(Integer jourReservation) {
-        this.jourReservation = jourReservation;
+
+
+    public void setDateFinReservation(LocalDate dateFinReservation) {
+        this.dateFinReservation = dateFinReservation;
     }
+
+
+
+    public Boolean getIsApproved() {
+    return isApproved;
+}
+
+public void setIsApproved(Boolean isApproved) {
+    this.isApproved = isApproved;
+}
+
 }

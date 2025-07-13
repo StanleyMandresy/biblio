@@ -96,7 +96,7 @@
 </head>
 <body>
    <button type="submit"><a href="${pageContext.request.contextPath}/prets/adherent">Voir vos prets</a></button>
-
+   <button type="submit"><a href="${pageContext.request.contextPath}/reservations/add">Faire une reservation</a></button>
 <h2>Recherche livres</h2>
 
 

@@ -141,6 +141,13 @@
                     </a>
                 </li>
 
+                    <li class="nav-link active">
+                    <a href="${pageContext.request.contextPath}/reservations">
+                        <i class="fas fa-home"></i>
+                        <span>Voir  Reservations</span>
+                    </a>
+                </li>
+
  <li class="nav-link active">
                     <a href="${pageContext.request.contextPath}/profils">
                         <i class="fas fa-home"></i>

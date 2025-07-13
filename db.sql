@@ -146,8 +146,11 @@ CREATE TABLE Reservation (
     idExemplaireLivre INT REFERENCES ExemplaireLivre(idExemplaireLivre),
     date_reservation DATE NOT NULL DEFAULT CURRENT_DATE,
     date_debut_reservation DATE,
-    jourreservation INT
+      date_fin_reservation DATE,
+
+    isApproved BOOLEAN DEFAULT FALSE
 );
+
 CREATE INDEX idx_livre_titre ON Livre(Titre);
 CREATE INDEX idx_livre_auteur ON Livre(Auteur);
 CREATE INDEX idx_pret_user ON Pret(IdAdherent);
