@@ -58,6 +58,10 @@ public Pret creerPretSimple(Long idAdherent, Long idExemplaire, String typePret,
         throw new RuntimeException("L'exemplaire sélectionné n'est pas disponible.");
     }
 
+    if(penaliteRepository.existsByAdherent_IdAdherentAndLeveFalse( idAdherent)){
+    throw new RuntimeException("L'adherent est pénalisé.");
+    }
+
 
     // Vérification quota
     AdherentQuota quota = adherentQuotaRepository.findById(idAdherent)

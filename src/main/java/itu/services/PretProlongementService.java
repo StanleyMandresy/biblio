@@ -40,6 +40,9 @@ public class PretProlongementService {
       @Autowired
     private PretRepository pretRepository;
 
+     @Autowired
+    private PenaliteRepository penaliteRepository;
+
 
    @Transactional
 public PretProlongement demanderProlongement(Pret pret, int jours) {
@@ -56,6 +59,10 @@ public PretProlongement demanderProlongement(Pret pret, int jours) {
    if (quota.getQuotaEmprunter() >= profil.getQuotaMaxEmprunter()) {
             throw new RuntimeException("Le quota de prêts à domicile est atteint.");
         }
+
+     if(penaliteRepository.existsByAdherent_IdAdherentAndLeveFalse(adherent.getIdAdherent())){
+    throw new RuntimeException("vous etes  pénalisé.");
+    }
 
     PretProlongement prolongement = new PretProlongement(pret, jours);
     return prolongementRepository.save(prolongement);

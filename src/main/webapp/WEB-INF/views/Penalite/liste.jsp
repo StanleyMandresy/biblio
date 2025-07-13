@@ -85,11 +85,11 @@
         <c:forEach var="p" items="${penalites}">
             <tr class="${empty p.datelevePenalite ? 'active-penalty' : ''}">
                 <td>${p.adherent.nom} ${p.adherent.prenom}</td>
-                <td class="date-cell"><fmt:formatDate value="${p.dateDebutPenalite}" pattern="dd/MM/yyyy"/></td>
+                <td class="date-cell">${p.dateDebutPenalite}</td>
                 <td class="date-cell">
                     <c:choose>
                         <c:when test="${not empty p.datelevePenalite}">
-                            <fmt:formatDate value="${p.datelevePenalite}" pattern="dd/MM/yyyy"/>
+                            <${p.datelevePenalite}"/>
                         </c:when>
                         <c:otherwise>
                             <span style="color: var(--cafe-error);">En cours</span>
@@ -104,6 +104,18 @@
                         </a>
                     </c:if>
                 </td>
+                  <td>
+                            <c:if test="${not p.leve}">
+                                <form action="${pageContext.request.contextPath}/penalites/lever/${p.idPenalite}" method="post">
+                                    <input type="submit" value="Lever la pénalité" />
+                                </form>
+                            </c:if>
+
+                            <c:if test="${p.leve}">
+                                Levée
+                            </c:if>
+                        </td>
+
             </tr>
         </c:forEach>
     </tbody>

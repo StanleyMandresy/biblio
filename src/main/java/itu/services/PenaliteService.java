@@ -53,4 +53,23 @@ public class PenaliteService {
     public List<Penalite> getPenalitesParAdherent(Long idAdherent) {
         return penaliteRepository.findByAdherentIdAdherent(idAdherent);
     }
+
+        @Transactional
+    public void leverPenalite(Long idPenalite) {
+        Penalite penalite = penaliteRepository.findById(idPenalite)
+            .orElseThrow(() -> new RuntimeException("Pénalité introuvable"));
+
+        if (Boolean.TRUE.equals(penalite.getLeve())) {
+            throw new RuntimeException("Cette pénalité a déjà été levée");
+        }
+
+        penalite.setLeve(true);
+        penalite.setDatelevePenalite(LocalDate.now());
+        penaliteRepository.save(penalite);
+    }
+
+    // ✅ Vérifier si un adhérent a une pénalité non levée
+    public boolean aPenaliteNonLevee(Long idAdherent) {
+        return penaliteRepository.existsByAdherent_IdAdherentAndLeveFalse(idAdherent);
+    }
 }

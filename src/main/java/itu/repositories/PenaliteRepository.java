@@ -6,4 +6,6 @@ import java.util.List;
 
 public interface PenaliteRepository extends JpaRepository<Penalite, Long> {
     List<Penalite> findByAdherentIdAdherent(Long idAdherent);
+    boolean existsByAdherent_IdAdherentAndLeveFalse(Long idAdherent);
+
 }
