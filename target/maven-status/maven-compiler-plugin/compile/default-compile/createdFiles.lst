@@ -38,6 +38,7 @@ itu\services\PenaliteService.class
 itu\services\TypeLivreService.class
 itu\repositories\AbonnementRepository.class
 itu\repositories\ReservationRepository.class
+itu\services\DashboardService.class
 itu\repositories\AdherentQuotaRepository.class
 itu\controllers\ReservationController.class
 itu\models\Profil.class

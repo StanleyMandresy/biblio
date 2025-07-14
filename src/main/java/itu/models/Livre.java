@@ -98,4 +98,7 @@ public Integer getRestrictionAge() {
             .filter(ex -> "bon".equals(ex.getEtat()) || "moyen".equals(ex.getEtat()))
             .count();
     }
+
+
+
 }

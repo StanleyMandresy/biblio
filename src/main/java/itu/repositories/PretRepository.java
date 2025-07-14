@@ -4,6 +4,9 @@ import itu.models.Pret;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
+import org.springframework.data.domain.Pageable;
+
+
 import java.util.List;
 
 public interface PretRepository extends JpaRepository<Pret, Long> {
@@ -68,4 +71,31 @@ List<Pret> findAllWithDetails();
     List<Pret> findEmpruntsARendreBientot();
 
      List<Pret> findByAdherentIdAdherent(Long idAdherent);
+
+@Query("SELECT COUNT(p) FROM Pret p WHERE EXTRACT(YEAR FROM p.dateEmprunt) = :annee AND EXTRACT(MONTH FROM p.dateEmprunt) = :mois")
+long countPretsByMoisAndAnnee(@Param("mois") int mois, @Param("annee") int annee);
+
+
+@Query(value = "SELECT a.nom, COUNT(p.idpret) " +
+               "FROM pret p " +
+               "JOIN adherent a ON p.idadherent = a.idadherent " +
+               "WHERE EXTRACT(YEAR FROM p.date_emprunt) = :annee AND EXTRACT(MONTH FROM p.date_emprunt) = :mois " +
+               "GROUP BY a.nom " +
+               "ORDER BY COUNT(p.idpret) DESC " +
+               "LIMIT 3", nativeQuery = true)
+List<Object[]> topAdherentsParPret(@Param("mois") int mois, @Param("annee") int annee);
+
+
+@Query(value = "SELECT l.titre, COUNT(p.idpret) " +
+               "FROM pret p " +
+               "JOIN exemplairelivre e ON p.idexemplairelivre = e.idexemplairelivre " +
+               "JOIN livre l ON e.idlivre = l.idlivre " +
+               "WHERE EXTRACT(YEAR FROM p.date_emprunt) = :annee AND EXTRACT(MONTH FROM p.date_emprunt) = :mois " +
+               "GROUP BY l.titre " +
+               "ORDER BY COUNT(p.idpret) DESC " +
+               "LIMIT 3", nativeQuery = true)
+List<Object[]> topLivresPretes(@Param("mois") int mois, @Param("annee") int annee);
+
+
+
 }

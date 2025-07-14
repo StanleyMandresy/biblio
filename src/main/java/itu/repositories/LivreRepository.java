@@ -4,6 +4,9 @@ import itu.models.Livre;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
+import org.springframework.data.domain.Pageable;
+
+
 import java.util.List;
 
 public interface LivreRepository extends JpaRepository<Livre, Long> {
@@ -24,4 +27,9 @@ List<Livre> rechercherLivres(
 
   @Query("SELECT DISTINCT l FROM Livre l JOIN FETCH l.categories c WHERE c.id IN :categories")
 List<Livre> rechercherLivresParCategories(@Param("categories") List<Long> categories);
+
+@Query("SELECT p.exemplaireLivre.livre.titre, COUNT(p) as nb FROM Pret p WHERE FUNCTION('YEAR', p.dateEmprunt) = :annee AND FUNCTION('MONTH', p.dateEmprunt) = :mois GROUP BY p.exemplaireLivre.livre.titre ORDER BY nb DESC")
+List<Object[]> topLivresPretes(@Param("mois") int mois, @Param("annee") int annee, Pageable pageable);
+
+
 }

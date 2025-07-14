@@ -37,6 +37,7 @@ I:\biblio\src\main\java\itu\models\ExemplaireLivre.java
 I:\biblio\src\main\java\itu\repositories\UserRepository.java
 I:\biblio\src\main\java\itu\controllers\ProfilController.java
 I:\biblio\src\main\java\itu\controllers\ReservationController.java
+I:\biblio\src\main\java\itu\services\DashboardService.java
 I:\biblio\src\main\java\itu\services\AbonnementService.java
 I:\biblio\src\main\java\itu\models\CategorieLivre.java
 I:\biblio\src\main\java\itu\controllers\LivreController.java

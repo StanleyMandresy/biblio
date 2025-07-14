@@ -4,6 +4,9 @@ import itu.models.Adherent;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
+import org.springframework.data.domain.Pageable;
+
+
 import java.util.List;
 import java.util.Optional;
 
@@ -55,5 +58,12 @@ public interface AdherentRepository extends JpaRepository<Adherent, Long> {
     boolean existsByEmail(String email);
 
        Optional<Adherent> findByEmailAndMotDePasse(String email, String motDePasse);
+@Query("SELECT COUNT(a) FROM Adherent a " +
+       "WHERE EXTRACT(YEAR FROM a.dateInscription) = :annee " +
+       "AND EXTRACT(MONTH FROM a.dateInscription) = :mois")
+int countAdherentsInscrits(@Param("mois") int mois, @Param("annee") int annee);
+
+
+
 
 }
