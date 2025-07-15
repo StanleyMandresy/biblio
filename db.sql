@@ -169,7 +169,7 @@ CREATE TABLE Users (
     Id_Profil INTEGER NOT NULL REFERENCES Profil(Id_Profil)
 );
 INSERT INTO Users (Nom, Prenom, Mdp, Email, DateNaissance, Id_Profil)
-VALUES ('admin', 'super', 'admin123', 'admin@mail.com', '1990-01-01', 3);
+VALUES ('admin', 'super', 'admin123', 'admin@gmail.com', '1990-01-01', 3);
 
 CREATE TABLE Pret_Prolongement (
     idProlongement SERIAL PRIMARY KEY,

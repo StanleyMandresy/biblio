@@ -46,7 +46,7 @@ public class PretService {
 
 
 
-public Pret creerPretSimple(Long idAdherent, Long idExemplaire, String typePret, int joursPret) {
+public Pret creerPretSimple(Long idAdherent, Long idExemplaire, String typePret,LocalDate datePret, int joursPret) {
     Adherent adherent = adherentRepository.findById(idAdherent)
             .orElseThrow(() -> new RuntimeException("Adhérent introuvable"));
 
@@ -92,7 +92,7 @@ public Pret creerPretSimple(Long idAdherent, Long idExemplaire, String typePret,
     }
 
     // Calcul des dates
-    LocalDate today = LocalDate.now();
+    LocalDate today = datePret;
 
     if (!abonnementRepository.isAbonneAlaDate(adherent, today)) {
     throw new RuntimeException("L'adhérent doit avoir un abonnement valide à la date du prêt.");
@@ -157,6 +157,10 @@ public void rendre(Long idPret, LocalDate dateRendu) {
         quota.setQuotaEmprunter(quota.getQuotaEmprunter() - 1);
     }
     adherentQuotaRepository.save(quota);
+
+    if (dateRendu.isBefore(pret.getDateEmprunt())) {
+       throw new RuntimeException("la date de rendue ne peut pas etre au dela du date de pret.");
+    }
 
     
     if (dateRendu.isAfter(pret.getDateRenduPrevue())) {

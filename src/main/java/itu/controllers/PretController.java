@@ -93,12 +93,13 @@ public String afficherFormulaire(@RequestParam("type") String typePret, Model mo
             @RequestParam Long adherentId,
             @RequestParam Long exemplaireId,
             @RequestParam String typePret,
+            @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate datePret,
             @RequestParam(required = false, defaultValue = "1") int joursPret,
             Model model,
             RedirectAttributes redirectAttributes
     ) {
         try {
-            pretService.creerPretSimple(adherentId, exemplaireId, typePret, joursPret);
+            pretService.creerPretSimple(adherentId, exemplaireId, typePret,datePret, joursPret);
             return "redirect:/prets";
            
     } catch (RuntimeException e) {
@@ -139,7 +140,7 @@ public String rendrePretAvecDate(@RequestParam Long idPret,
     try {
         pretService.rendre(idPret, dateRendu);
         redirectAttributes.addFlashAttribute("message", "Prêt rendu avec succès !");
-    } catch (Exception e) {
+    } catch (RuntimeException e) {
         redirectAttributes.addFlashAttribute("errorMessage", e.getMessage());
     }
     return "redirect:/prets";

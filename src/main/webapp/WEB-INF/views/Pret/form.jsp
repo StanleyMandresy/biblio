@@ -121,6 +121,12 @@
         <input type="number" name="joursPret" min="1" max="15" value="1" required />
     </c:if>
 
+     <label for="datePret">Date de Pret :</label>
+    <input type="date" id="datePret" name="datePret"
+           value="${datePret}"  />"
+           required />
+
+
     <input type="submit" value="Enregistrer le prêt" />
 </form>
 
