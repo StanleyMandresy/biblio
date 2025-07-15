@@ -1,6 +1,7 @@
 deploy.bat 
 deploy2.bat 
 deploy.sh
+reset.bat
 
 target/
 target/FilmCategorie/
