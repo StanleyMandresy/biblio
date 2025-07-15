@@ -26,7 +26,7 @@ public class AbonnementService {
     
 
 @Transactional
-public Abonnement creerAbonnement(Long adherentId, BigDecimal montant, 
+public Abonnement creerAbonnement(Long adherentId, 
                                  LocalDate dateDebut, LocalDate dateFin) {
     
     // Validation des dates
@@ -48,10 +48,7 @@ public Abonnement creerAbonnement(Long adherentId, BigDecimal montant,
         throw new IllegalStateException("Un abonnement existe déjà pour cet adhérent sur cette période");
     }
 
-    // Validation du montant
-    if (montant.compareTo(BigDecimal.ZERO) <= 0) {
-        throw new IllegalArgumentException("Le montant doit être positif");
-    }
+
     
     // --- Nouvelle partie : gestion quota ---
     // Vérifie si un quota existe déjà pour cet adhérent
@@ -67,7 +64,7 @@ public Abonnement creerAbonnement(Long adherentId, BigDecimal montant,
 
     Abonnement abonnement = new Abonnement();
     abonnement.setAdherent(adherent);
-    abonnement.setMontant(montant);
+    abonnement.setMontant(BigDecimal.ZERO);
     abonnement.setDateDebut(dateDebut);
     abonnement.setDateFin(dateFin);
 

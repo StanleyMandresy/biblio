@@ -88,6 +88,10 @@
             color: #ff7043;
             text-decoration: none;
         }
+         .aa {
+            color: #ffffff;
+            text-decoration: none;
+        }
 
         a:hover {
             text-decoration: underline;
@@ -95,8 +99,8 @@
     </style>
 </head>
 <body>
-   <button type="submit"><a href="${pageContext.request.contextPath}/prets/adherent">Voir vos prets</a></button>
-   <button type="submit"><a href="${pageContext.request.contextPath}/reservations/add">Faire une reservation</a></button>
+   <button type="submit"><a class="aa" href="${pageContext.request.contextPath}/prets/adherent">Voir vos prets</a></button>
+   <button type="submit"><a class="aa" href="${pageContext.request.contextPath}/reservations/add">Faire une reservation</a></button>
 <h2>Recherche livres</h2>
 
 

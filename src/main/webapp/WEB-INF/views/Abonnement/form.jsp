@@ -144,17 +144,7 @@
                 </div>
 
                 <!-- Montant -->
-                <div class="mb-4">
-                    <label for="montant" class="form-label required">Montant</label>
-                    <div class="input-group">
-                        <input type="number" step="0.01" min="0" class="form-control"
-                               id="montant" name="montant" value="${montant}" required>
-                        <span class="input-group-text">€</span>
-                    </div>
-                    <div class="invalid-feedback">
-                        Veuillez saisir un montant valide.
-                    </div>
-                </div>
+              
 
                 <!-- Boutons -->
                 <div class="d-flex justify-content-between mt-5">

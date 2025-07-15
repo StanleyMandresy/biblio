@@ -35,14 +35,14 @@ public String afficherFormulaireAbonnement(Model model) {
 @PostMapping("/create")
 public String enregistrerAbonnement(
         @RequestParam Long adherentId,
-        @RequestParam BigDecimal montant,
+       
         @RequestParam LocalDate dateDebut,
         @RequestParam LocalDate dateFin
        ) {
     
     try {
         Abonnement abonnement = abonnementService.creerAbonnement(
-            adherentId, montant, dateDebut, dateFin);
+            adherentId, dateDebut, dateFin);
 
         return "redirect:/adherents";
     } catch (IllegalArgumentException | IllegalStateException e) {
