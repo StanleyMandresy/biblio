@@ -68,6 +68,16 @@
         color: var(--cafe-error);
         font-weight: 500;
     }
+       a {
+            color: #ff7043;
+            text-decoration: none;
+            margin: 0 10px;
+            font-weight: bold;
+        }
+
+        a:hover {
+            text-decoration: underline;
+        }
 </style>
 
 <h2>Liste des pénalités</h2>
@@ -120,3 +130,8 @@
         </c:forEach>
     </tbody>
 </table>
+    <div style="margin-bottom: 20px;">
+        <a href="${pageContext.request.contextPath}/dashboard">revenir au dashboard</a>
+   
+    </div>
+</html>

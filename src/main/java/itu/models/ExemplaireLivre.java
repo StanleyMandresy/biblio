@@ -33,7 +33,7 @@ public class ExemplaireLivre {
     private String etat = "bon";
 
     @Column(name = "status")
-private Integer status = 1;
+    private Integer status = 1;
 
     @OneToMany(mappedBy = "exemplaireLivre", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @JsonIgnore
@@ -59,8 +59,8 @@ private Integer status = 1;
     public String getCodeBarre() { return codeBarre; }
     public void setCodeBarre(String codeBarre) { this.codeBarre = codeBarre; }
 
-public Integer getStatus() { return status; }
-public void setStatus(Integer status) { this.status = status; }
+    public Integer getStatus() { return status; }
+    public void setStatus(Integer status) { this.status = status; }
 
     public Date getDateAcquisition() { return dateAcquisition; }
     public void setDateAcquisition(Date dateAcquisition) { this.dateAcquisition = dateAcquisition; }

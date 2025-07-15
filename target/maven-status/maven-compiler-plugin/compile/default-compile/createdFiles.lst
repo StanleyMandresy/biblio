@@ -1,5 +1,6 @@
 itu\models\Adherent.class
 itu\repositories\PretRepository.class
+itu\services\AdherentQuotaService.class
 itu\services\AbonnementService.class
 itu\services\ReservationService.class
 itu\controllers\LivreController.class

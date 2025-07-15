@@ -20,6 +20,7 @@ G:\biblio\src\main\java\itu\services\UserService.java
 G:\biblio\src\main\java\itu\controllers\PretController.java
 G:\biblio\src\main\java\itu\repositories\PenaliteRepository.java
 G:\biblio\src\main\java\itu\repositories\CategorieLivreRepository.java
+G:\biblio\src\main\java\itu\services\AdherentQuotaService.java
 G:\biblio\src\main\java\itu\services\TypeLivreService.java
 G:\biblio\src\main\java\itu\repositories\PretProlongementRepository.java
 G:\biblio\src\main\java\itu\services\CategorieLivreService.java

@@ -2,7 +2,7 @@ package itu.models;
 
 import jakarta.persistence.*;
 import java.util.List;
-
+import com.fasterxml.jackson.annotation.*;
 @Entity
 @Table(name = "profil")
 public class Profil {
@@ -25,6 +25,7 @@ public class Profil {
     private Integer dureePenalite;
 
     @OneToMany(mappedBy = "profil", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @JsonBackReference
     private List<Adherent> adherents;
 
     // Constructeurs

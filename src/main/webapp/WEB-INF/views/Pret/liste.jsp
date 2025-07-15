@@ -191,5 +191,11 @@
     </tbody>
 </table>
   </c:if>
+  <c:if test="${not affichageParAdherent}">
+    <div style="margin-bottom: 20px;">
+        <a href="${pageContext.request.contextPath}/dashboard">revenir au dashboard</a>
+   
+    </div>
+</c:if>
 </body>
 </html>

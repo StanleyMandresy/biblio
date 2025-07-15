@@ -84,6 +84,16 @@
         .date-cell {
             white-space: nowrap;
         }
+           a {
+            color: #ff7043;
+            text-decoration: none;
+            margin: 0 10px;
+            font-weight: bold;
+        }
+
+        a:hover {
+            text-decoration: underline;
+        }
     </style>
 </head>
 <body>
@@ -123,7 +133,11 @@
     <tbody>
         <c:forEach var="a" items="${adherents}">
             <tr>
-                <td>${a.idAdherent}</td>
+                <td>
+                 <a href="${pageContext.request.contextPath}/web/adherents/${a.idAdherent}" target="_blank">
+                        ${a.idAdherent}
+                    </a>
+                 </td>   
                 <td>${a.nom}</td>
                 <td>${a.prenom}</td>
                 <td class="date-cell"><${a.dateNaissance}</td>
@@ -134,6 +148,9 @@
         </c:forEach>
     </tbody>
 </table>
-
+    <div style="margin-bottom: 20px;">
+        <a href="${pageContext.request.contextPath}/dashboard">revenir au dashboard</a>
+   
+    </div>
 </body>
 </html>

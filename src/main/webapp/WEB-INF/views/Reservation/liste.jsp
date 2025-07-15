@@ -60,6 +60,16 @@
         input[type="submit"]:hover {
             background-color: #ff5722;
         }
+           a {
+            color: #ff7043;
+            text-decoration: none;
+            margin: 0 10px;
+            font-weight: bold;
+        }
+
+        a:hover {
+            text-decoration: underline;
+        }
     </style>
 </head>
 <body>
@@ -104,5 +114,9 @@
             </tr>
         </c:forEach>
     </table>
+        <div style="margin-bottom: 20px;">
+        <a href="${pageContext.request.contextPath}/dashboard">revenir au dashboard</a>
+   
+    </div>
 </body>
 </html>

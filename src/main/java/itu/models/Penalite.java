@@ -2,7 +2,7 @@ package itu.models;
 
 import jakarta.persistence.*;
 import java.time.LocalDate;
-
+import com.fasterxml.jackson.annotation.*;
 @Entity
 @Table(name = "Penalite")
 public class Penalite {
@@ -13,6 +13,7 @@ public class Penalite {
 
     @ManyToOne
     @JoinColumn(name = "IdAdherent", nullable = false)
+    @JsonBackReference
     private Adherent adherent;
 
     @ManyToOne

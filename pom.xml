@@ -117,6 +117,13 @@
     <artifactId>jackson-databind</artifactId>
     <version>2.15.2</version> <!-- Ou autre version compatible -->
 </dependency>
+<dependency>
+    <groupId>com.fasterxml.jackson.datatype</groupId>
+    <artifactId>jackson-datatype-jsr310</artifactId>
+    <version>2.15.3</version> <!-- ou la version que tu utilises dans ton projet -->
+</dependency>
+
+
     </dependencies>
 
     <build>

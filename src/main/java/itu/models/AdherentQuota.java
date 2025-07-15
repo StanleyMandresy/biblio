@@ -1,7 +1,7 @@
 package itu.models;
 
 import jakarta.persistence.*;
-
+import com.fasterxml.jackson.annotation.*;
 
 @Entity
 @Table(name = "adherent_quota")
@@ -20,6 +20,7 @@ public class AdherentQuota {
     @OneToOne
     @JoinColumn(name = "id_adherent", referencedColumnName = "IdAdherent", 
                insertable = false, updatable = false)
+      @JsonBackReference           
     private Adherent adherent;
 
     // Constructeur par défaut
