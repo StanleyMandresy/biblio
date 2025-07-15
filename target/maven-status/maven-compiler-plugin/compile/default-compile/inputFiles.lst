@@ -13,6 +13,7 @@ G:\biblio\src\main\java\itu\services\ExemplaireLivreService.java
 G:\biblio\src\main\java\itu\models\Abonnement.java
 G:\biblio\src\main\java\itu\repositories\AdherentQuotaRepository.java
 G:\biblio\src\main\java\itu\services\AbonnementService.java
+G:\biblio\src\main\java\itu\controllers\WebController.java
 G:\biblio\src\main\java\itu\models\User.java
 G:\biblio\src\main\java\itu\repositories\LivreRepository.java
 G:\biblio\src\main\java\itu\services\UserService.java

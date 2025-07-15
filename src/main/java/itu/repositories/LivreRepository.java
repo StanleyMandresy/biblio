@@ -8,10 +8,21 @@ import org.springframework.data.domain.Pageable;
 
 
 import java.util.List;
+import java.util.Optional;
 
 public interface LivreRepository extends JpaRepository<Livre, Long> {
  @Query("SELECT l FROM Livre l LEFT JOIN FETCH l.exemplaires")
 List<Livre> findAllWithExemplaires();   
+
+@Query("""
+    SELECT l FROM Livre l
+    LEFT JOIN FETCH l.exemplaires
+    LEFT JOIN FETCH l.categories
+    LEFT JOIN FETCH l.typeLivre
+    WHERE l.idLivre = :id
+""")
+Optional<Livre> findByIdWithExemplaires(@Param("id") Long id);
+
 
 @Query("SELECT DISTINCT l FROM Livre l LEFT JOIN FETCH l.categories WHERE " +
        "(:titre IS NULL OR LOWER(l.titre) LIKE LOWER('%' || CAST(:titre AS text) || '%')) " +

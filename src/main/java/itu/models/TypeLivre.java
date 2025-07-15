@@ -2,7 +2,8 @@ package itu.models;
 
 import jakarta.persistence.*;
 import java.util.List;
-
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 @Entity
 @Table(name = "typelivre")
 public class TypeLivre {
@@ -15,6 +16,7 @@ public class TypeLivre {
     private String type;
 
     @OneToMany(mappedBy = "typeLivre", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @JsonBackReference
     private List<Livre> livres;
 
     // Constructeurs
