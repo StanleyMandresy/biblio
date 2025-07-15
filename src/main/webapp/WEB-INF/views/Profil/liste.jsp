@@ -109,7 +109,7 @@
                 <th>Nom</th>
                 <th>Quota sur place</th>
                 <th>Quota emprunt</th>
-                <th>Durée prêt (jours)</th>
+           
                 <th>Durée pénalité (jours)</th>
                 <th>Actions</th>
             </tr>
@@ -121,7 +121,7 @@
                     <td>${profil.nomProfil}</td>
                     <td>${profil.quotaMaxSurPlace}</td>
                     <td>${profil.quotaMaxEmprunter}</td>
-                    <td>${profil.dureePret}</td>
+                 
                     <td>${profil.dureePenalite}</td>
                     <td>
                         <a class="action-link" href="${pageContext.request.contextPath}/profils/update/${profil.idProfil}">Modifier</a>

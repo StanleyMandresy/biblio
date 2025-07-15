@@ -5,8 +5,8 @@ CREATE TABLE Profil (
     Id_Profil SERIAL PRIMARY KEY,
     Nom_Profil VARCHAR(50) NOT NULL,
     Quota_maxSurPlace INTEGER NOT NULL,
-    Quota_maxEmprunter INTEGER,
-    Duree_pret INTEGER NOT NULL
+    Quota_maxEmprunter INTEGER
+ 
 );
 ALTER TABLE Profil ADD COLUMN Duree_penalite INTEGER DEFAULT 0;
 

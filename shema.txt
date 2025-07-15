@@ -1,0 +1,83 @@
++----------------+       +----------------+       +----------------+
+|    Profil      |       |   Adherent     |       |  Abonnement    |
++----------------+       +----------------+       +----------------+
+| PK: Id_Profil  |<------| PK: IdAdherent |------>| PK:IdAbonnement|
+|    Nom_Profil  |       |    Nom         |       | FK:IdAdherent  |
+| Quota_maxSurPl.|       |    Prenom      |       |    Datedebut   |
+| Quota_maxEmpr. |       |    DateNaiss.  |       |    DateFin     |
+|    Duree_pret  |       |    Email       |       |    Montant     |
+| Duree_penalite |       |    MotDePasse  |       +----------------+
++----------------+       | Date_inscript. |
+                         | FK:Id_Profil   |
+                         +----------------+
+                               |
+                               |       +----------------+
+                               |       |     Users      |
+                               |       +----------------+
+                               |       | PK: IdUser     |
+                               +------>|    Nom         |
+                                       |    Prenom      |
+                                       |    Mdp         |
+                                       |    Email       |
+                                       |    DateNaiss.  |
+                                       | FK:Id_Profil   |
+                                       +----------------+
+
++----------------+       +----------------+       +----------------+
+|  TypeLivre     |       |     Livre      |       | ExemplaireLivre|
++----------------+       +----------------+       +----------------+
+| PK:IdTypeLivre |<------| PK: IdLivre    |<------| PK:IdExemplaire|
+|    Type        |       |    Titre       |       | FK:IdLivre     |
++----------------+       |    Auteur      |       |    CodeBarre   |
+                         |    DateEdition |       |    DateAcquis. |
++----------------+       | FK:IdTypeLivre |       |    Etat        |
+| CategorieLivre |       |    Status      |       |    Status      |
++----------------+       | restriction_age|       +----------------+
+| PK:IdCatLivre  |       +----------------+               ^
+|    Categorie   |             ^                          |
++----------------+             |                          |
+      |                       |                          |
+      |               +----------------+                |
+      |               |  LivreCategorie |                |
+      +-------------->+----------------+                |
+                      | PK:IdCatLivre  |                |
+                      | PK:IdLivre     |                |
+                      +----------------+                |
+                                                       |
++----------------+       +----------------+            |
+|    Pret        |       |  Penalite      |            |
++----------------+       +----------------+            |
+| PK:IdPret      |<------| PK:IdPenalite  |            |
+|    TypePret    |       | FK:IdAdherent  |            |
+|    Date_emprunt|       | FK:IdPret      |            |
+|    Date_rendu  |       |    DateDebut   |            |
+| Date_rendu_prev|       |    Dateleve    |            |
+|    is_prolonged|       |    Leve        |            |
+| FK:IdAdherent  |       +----------------+            |
+| FK:IdExemplaire|                                     |
++----------------+       +----------------+            |
+        ^               |adherent_quota  |             |
+        |               +----------------+             |
+        |               | PK:id_adherent |<------------+
++----------------+       | quota_surplace |
+|Pret_Prolongemnt|       | quota_emprunter|
++----------------+       +----------------+
+| PK:idProlongemt|
+| FK:idPret      |
+| jour_prolongemt|
+| est_valide     |
++----------------+
+        ^
+        |
++----------------+
+|  Reservation   |
++----------------+
+| PK:idReservat. |
+| FK:idAdherent  |
+| FK:idLivre     |
+| FK:idExemplaire|
+| date_reservat. |
+| date_debut_res.|
+| date_fin_res.  |
+| isApproved     |
++----------------+
