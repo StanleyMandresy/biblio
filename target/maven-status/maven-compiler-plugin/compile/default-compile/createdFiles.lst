@@ -1,5 +1,6 @@
 itu\models\Adherent.class
 itu\repositories\PretRepository.class
+itu\services\AdherentQuotaService.class
 itu\services\AbonnementService.class
 itu\services\ReservationService.class
 itu\controllers\LivreController.class
@@ -33,6 +34,7 @@ itu\models\Livre.class
 itu\services\PretProlongementService.class
 itu\controllers\PenaliteController.class
 itu\controllers\AbonnementController.class
+itu\controllers\WebController.class
 itu\controllers\DashboardController.class
 itu\services\PenaliteService.class
 itu\services\TypeLivreService.class

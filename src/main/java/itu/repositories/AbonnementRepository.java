@@ -6,7 +6,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.repository.query.Param;
 import org.springframework.data.jpa.repository.Query;
 import java.util.List;
-
+import java.util.Optional;
 import java.time.LocalDate;
 
 public interface AbonnementRepository extends JpaRepository<Abonnement, Long> {
@@ -30,6 +30,11 @@ boolean existsByAdherentAndDates(
        "WHERE a.adherent = :adherent AND :datePret BETWEEN a.dateDebut AND a.dateFin")
 boolean isAbonneAlaDate(
         @Param("adherent") Adherent adherent,
-        @Param("datePret") LocalDate datePret);       
+        @Param("datePret") LocalDate datePret); 
+
+@Query("SELECT MIN(a.dateDebut), MAX(a.dateFin) FROM Abonnement a WHERE a.adherent.idAdherent = :idAdherent")
+Optional<Object[]> findPeriodeGlobaleParAdherent(@Param("idAdherent") Long idAdherent);
+
+List<Abonnement> findByAdherentIdAdherentOrderByDateDebutAsc(Long idAdherent);
 
 }

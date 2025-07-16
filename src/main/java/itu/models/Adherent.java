@@ -3,6 +3,7 @@ package itu.models;
 import jakarta.persistence.*;
 import java.time.LocalDate;
 import java.util.List;
+import com.fasterxml.jackson.annotation.*;
 
 @Entity
 @Table(name = "adherent")
@@ -32,18 +33,22 @@ public class Adherent {
 
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "id_profil", nullable = false)
+    @JsonManagedReference
     private Profil profil;
 
-        @OneToOne(mappedBy = "adherent", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
+   @OneToOne(mappedBy = "adherent", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
+   @JsonManagedReference
     private AdherentQuota quota;
 
 
     // Relations
     @OneToMany(mappedBy = "adherent", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @JsonIgnore
     private List<Pret> prets;
 
 
     @OneToMany(mappedBy = "adherent", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @JsonManagedReference
     private List<Penalite> penalites;
 
     // Constructeurs

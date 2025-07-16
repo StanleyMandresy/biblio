@@ -42,7 +42,7 @@ public String enregistrerProfil(
         @RequestParam String nomProfil,
         @RequestParam int quotaMaxSurPlace,
         @RequestParam(required = false) Integer quotaMaxEmprunter,
-        @RequestParam int dureePret,
+      
         @RequestParam(required = false, defaultValue = "0") Integer dureePenalite) {
 
     if (id != null) {
@@ -52,13 +52,13 @@ public String enregistrerProfil(
             existant.setNomProfil(nomProfil);
             existant.setQuotaMaxSurPlace(quotaMaxSurPlace);
             existant.setQuotaMaxEmprunter(quotaMaxEmprunter);
-            existant.setDureePret(dureePret);
+          
             existant.setDureePenalite(dureePenalite);
             profilService.enregistrerProfil(existant);
         }
     } else {
         // Création
-        Profil nouveau = new Profil(nomProfil, quotaMaxSurPlace, quotaMaxEmprunter, dureePret);
+        Profil nouveau = new Profil(nomProfil, quotaMaxSurPlace, quotaMaxEmprunter);
         nouveau.setDureePenalite(dureePenalite);
         profilService.enregistrerProfil(nouveau);
     }

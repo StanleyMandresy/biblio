@@ -91,6 +91,16 @@
             margin: 0 auto;
             text-align: center;
         }
+           a {
+            color: #ff7043;
+            text-decoration: none;
+            margin: 0 10px;
+            font-weight: bold;
+        }
+
+        a:hover {
+            text-decoration: underline;
+        }
     </style>
 </head>
 <body>
@@ -109,7 +119,7 @@
                 <th>Nom</th>
                 <th>Quota sur place</th>
                 <th>Quota emprunt</th>
-                <th>Durée prêt (jours)</th>
+           
                 <th>Durée pénalité (jours)</th>
                 <th>Actions</th>
             </tr>
@@ -121,7 +131,7 @@
                     <td>${profil.nomProfil}</td>
                     <td>${profil.quotaMaxSurPlace}</td>
                     <td>${profil.quotaMaxEmprunter}</td>
-                    <td>${profil.dureePret}</td>
+                 
                     <td>${profil.dureePenalite}</td>
                     <td>
                         <a class="action-link" href="${pageContext.request.contextPath}/profils/update/${profil.idProfil}">Modifier</a>
@@ -148,6 +158,9 @@
         });
     });
 </script>
-
+    <div style="margin-bottom: 20px;">
+        <a href="${pageContext.request.contextPath}/dashboard">revenir au dashboard</a>
+   
+    </div>
 </body>
 </html>

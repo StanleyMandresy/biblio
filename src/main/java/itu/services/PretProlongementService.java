@@ -82,21 +82,19 @@ public void validerProlongement(Long idProlongement) {
     Adherent adherent = ancienPret.getAdherent();
     String typePret = ancienPret.getTypePret();
 
-    // 🔧 Marquer le prêt comme prolongé
     ancienPret.setIsProlonged(true);
     pretRepository.save(ancienPret); // ✅ Nécessaire pour enregistrer la modification
 
-    // 🔧 Mise à jour du quota
+  
     AdherentQuota quota = adherentQuotaRepository.findById(adherent.getIdAdherent())
         .orElseThrow(() -> new RuntimeException("Quota de l'adhérent introuvable."));
     quota.setQuotaEmprunter(quota.getQuotaEmprunter() + 1);
      adherentQuotaRepository.save(quota);
 
-    // 🔧 Validation du prolongement
     prolongement.setEstValide(true);
     prolongementRepository.save(prolongement);
 
-    // 🔧 Création du nouveau prêt
+   
     Pret nouveauPret = new Pret();
     nouveauPret.setAdherent(adherent);
     nouveauPret.setExemplaireLivre(exemplaire);

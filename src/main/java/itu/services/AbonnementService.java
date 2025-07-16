@@ -10,7 +10,10 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import java.math.BigDecimal;
 import java.time.LocalDate;
-import java.util.List;
+import java.util.*;
+
+import java.util.Optional;
+import java.time.ZoneId;
 
 @Service
 public class AbonnementService {
@@ -26,7 +29,7 @@ public class AbonnementService {
     
 
 @Transactional
-public Abonnement creerAbonnement(Long adherentId, BigDecimal montant, 
+public Abonnement creerAbonnement(Long adherentId, 
                                  LocalDate dateDebut, LocalDate dateFin) {
     
     // Validation des dates
@@ -48,10 +51,7 @@ public Abonnement creerAbonnement(Long adherentId, BigDecimal montant,
         throw new IllegalStateException("Un abonnement existe déjà pour cet adhérent sur cette période");
     }
 
-    // Validation du montant
-    if (montant.compareTo(BigDecimal.ZERO) <= 0) {
-        throw new IllegalArgumentException("Le montant doit être positif");
-    }
+
     
     // --- Nouvelle partie : gestion quota ---
     // Vérifie si un quota existe déjà pour cet adhérent
@@ -67,7 +67,7 @@ public Abonnement creerAbonnement(Long adherentId, BigDecimal montant,
 
     Abonnement abonnement = new Abonnement();
     abonnement.setAdherent(adherent);
-    abonnement.setMontant(montant);
+    abonnement.setMontant(BigDecimal.ZERO);
     abonnement.setDateDebut(dateDebut);
     abonnement.setDateFin(dateFin);
 
@@ -82,4 +82,46 @@ public Abonnement creerAbonnement(Long adherentId, BigDecimal montant,
     public boolean adherentAbonnementActif(Long adherentId) {
         return abonnementRepository.existsByAdherentIdAdherentAndDateFinAfter(adherentId, LocalDate.now());
     }
+public Abonnement getDernierAbonnementParAdherent(Long idAdherent) {
+    Optional<Object[]> resultat = abonnementRepository.findPeriodeGlobaleParAdherent(idAdherent);
+
+    if (resultat.isEmpty()) {
+        System.out.println("❌ Aucun résultat trouvé pour l'adhérent ID: " + idAdherent);
+        return null;
+    }
+
+    Object[] row = resultat.get();
+   
+
+ 
+
+    LocalDate debut = convertToLocalDate(row[0]);
+    LocalDate fin = convertToLocalDate(row[0]);
+
+
+    Abonnement synthese = new Abonnement();
+    synthese.setDateDebut(debut);
+    synthese.setDateFin(fin);
+
+    System.out.println("✅ Abonnement synthétique construit : " + synthese);
+    return synthese;
+}
+
+
+private LocalDate convertToLocalDate(Object dateObj) {
+    if (dateObj instanceof LocalDate) {
+        return (LocalDate) dateObj;
+    } else if (dateObj instanceof java.sql.Date) {
+        return ((java.sql.Date) dateObj).toLocalDate();
+    } else if (dateObj instanceof java.util.Date) {
+        return ((java.util.Date) dateObj).toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
+    } else {
+        return null;
+    }
+}
+public List<Abonnement> getAbonnementsParAdherentOrdreChronologique(Long idAdherent) {
+    return abonnementRepository.findByAdherentIdAdherentOrderByDateDebutAsc(idAdherent);
+}
+
+
 }

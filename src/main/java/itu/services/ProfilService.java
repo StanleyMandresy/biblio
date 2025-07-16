@@ -16,7 +16,7 @@ public class ProfilService {
 
     @Transactional
     public Profil enregistrerProfil(String nomProfil, int quotaMaxSurPlace, 
-                            Integer quotaMaxEmprunter, int dureePret) {
+                            Integer quotaMaxEmprunter) {
         
         if (profilRepository.existsByNomProfil(nomProfil)) {
             throw new RuntimeException("Un profil avec ce nom existe déjà");
@@ -26,7 +26,7 @@ public class ProfilService {
         profil.setNomProfil(nomProfil);
         profil.setQuotaMaxSurPlace(quotaMaxSurPlace);
         profil.setQuotaMaxEmprunter(quotaMaxEmprunter);
-        profil.setDureePret(dureePret);
+     
 
         return profilRepository.save(profil);
     }

@@ -126,9 +126,7 @@
     <input type="number" id="quotaMaxEmprunter" name="quotaMaxEmprunter"
            value="${profil.quotaMaxEmprunter}" min="0" />
 
-    <label for="dureePret" class="required-field">Durée de prêt (jours) :</label>
-    <input type="number" id="dureePret" name="dureePret"
-           value="${profil.dureePret}" min="1" required />
+
 
     <label for="dureePenalite">Durée pénalité (jours) :</label>
     <input type="number" id="dureePenalite" name="dureePenalite"
