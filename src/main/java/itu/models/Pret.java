@@ -5,7 +5,7 @@ import jakarta.persistence.*;
 import java.time.LocalDate;
 import org.springframework.format.annotation.DateTimeFormat;
 import java.time.temporal.ChronoUnit;
-
+import com.fasterxml.jackson.annotation.*;
 
 @Entity
 @Table(name = "pret")
@@ -39,6 +39,7 @@ public class Pret {
 
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "idexemplairelivre", nullable = false)
+     @JsonIgnore
     private ExemplaireLivre exemplaireLivre;
 
     public Pret() {}

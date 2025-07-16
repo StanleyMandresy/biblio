@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
+import java.util.Optional;
 import java.util.Collections;
 @Service
 @Transactional
@@ -20,6 +21,11 @@ public class LivreService {
 
     public List<Livre> listerTousAvecExemplaires() {
     return livreRepository.findAllWithExemplaires();
+}
+
+public Livre getLivreAvecExemplaires(Long id) {
+    return livreRepository.findByIdWithExemplaires(id)
+            .orElseThrow(() -> new RuntimeException("Livre introuvable"));
 }
     public List<Livre> rechercherLivres(String titre, String auteur, Integer annee, Long typeId) {
         return livreRepository.rechercherLivres(

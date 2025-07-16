@@ -97,6 +97,8 @@
             text-decoration: underline;
         }
     </style>
+    <meta charset="UTF-8">
+
 </head>
 <body>
    <button type="submit"><a class="aa" href="${pageContext.request.contextPath}/prets/adherent">Voir vos prets</a></button>
@@ -160,7 +162,11 @@
     <tbody>
         <c:forEach var="livre" items="${livres}">
             <tr>
-                <td>${livre.titre}</td>
+                 <td>
+                    <a href="${pageContext.request.contextPath}/web/livres/${livre.idLivre}" target="_blank">
+                        ${livre.titre}
+                    </a>
+                 </td> 
                 <td>${livre.auteur}</td>
                 <td><c:out value="${livre.dateEdition}"/></td>
                 <td><c:out value="${livre.typeLivre != null ? livre.typeLivre.type : ''}"/></td>

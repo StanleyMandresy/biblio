@@ -4,6 +4,8 @@ package itu.models;
 import jakarta.persistence.*;
 import java.util.Set;
 import java.util.HashSet;
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 @Entity
 @Table(name = "categorielivre")
@@ -17,6 +19,7 @@ public class CategorieLivre {
     private String categorie;
 
     @ManyToMany(mappedBy = "categories", fetch = FetchType.LAZY)
+    @JsonBackReference
     private Set<Livre> livres = new HashSet<>();
 
     // Constructeurs
